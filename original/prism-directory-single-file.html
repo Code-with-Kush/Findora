@@ -1,0 +1,2931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7f8fb" />
+  <title>Prism Directory — Discover New Zealand</title>
+
+  <style>
+    :root {
+      --page-bg: #ffffff;
+      --surface: rgba(255, 255, 255, 0.91);
+      --surface-solid: #ffffff;
+      --text: #17181c;
+      --muted: #7a7f8b;
+      --line: rgba(17, 24, 39, 0.08);
+      --line-strong: rgba(17, 24, 39, 0.12);
+      --shadow: 0 24px 70px rgba(24, 29, 40, 0.12);
+      --rainbow: linear-gradient(
+        110deg,
+        #ff3b30 0%,
+        #ff9500 14%,
+        #ffd60a 28%,
+        #34c759 42%,
+        #00c7be 56%,
+        #0a84ff 70%,
+        #5e5ce6 84%,
+        #ff2d92 100%
+      );
+      --rainbow-soft: linear-gradient(
+        110deg,
+        rgba(255,59,48,.38) 0%,
+        rgba(255,149,0,.38) 14%,
+        rgba(255,214,10,.40) 28%,
+        rgba(52,199,89,.36) 42%,
+        rgba(0,199,190,.36) 56%,
+        rgba(10,132,255,.38) 70%,
+        rgba(94,92,230,.38) 84%,
+        rgba(255,45,146,.38) 100%
+      );
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfbfd 52%, #ffffff 100%);
+    }
+
+    button,
+    input { font: inherit; }
+
+    button { -webkit-tap-highlight-color: transparent; }
+
+    /* Header / integrated Prism identity */
+    .site-header {
+      position: relative;
+      z-index: 20;
+      width: 100%;
+      padding: 20px clamp(16px, 3vw, 42px) 0;
+    }
+
+    .header-rail {
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr);
+      align-items: center;
+      gap: 22px;
+      width: 100%;
+    }
+
+    .brand-portal {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      min-width: max-content;
+      color: inherit;
+      text-decoration: none;
+      user-select: none;
+      isolation: isolate;
+    }
+
+    .brand-portal::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: calc(100% + 10px);
+      width: 24px;
+      height: 1px;
+      transform: translateY(-50%);
+      background: var(--rainbow);
+      opacity: 0.42;
+      mask-image: linear-gradient(90deg, #000, transparent);
+      -webkit-mask-image: linear-gradient(90deg, #000, transparent);
+      transition: width 220ms ease, opacity 220ms ease;
+    }
+
+    .brand-portal:hover::after { width: 36px; opacity: 0.8; }
+
+    .prism-mark {
+      position: relative;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      display: grid;
+      place-items: center;
+    }
+
+    .prism-mark::before {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 50%;
+      padding: 1.5px;
+      background: conic-gradient(from 210deg, #ff3b30, #ff9500, #ffd60a, #34c759, #00c7be, #0a84ff, #5e5ce6, #ff2d92, #ff3b30);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.95;
+      transition: transform 500ms cubic-bezier(.2,.8,.2,1), filter 250ms ease;
+    }
+
+    .brand-portal:hover .prism-mark::before { transform: rotate(135deg); filter: saturate(1.15); }
+
+    .prism-lens {
+      position: relative;
+      width: 12px;
+      height: 12px;
+      border: 1.8px solid #202227;
+      border-radius: 50%;
+      background: rgba(255,255,255,.7);
+      box-shadow: 0 2px 9px rgba(20, 24, 31, 0.1);
+    }
+
+    .prism-lens::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 1.7px;
+      right: -6px;
+      bottom: -3px;
+      border-radius: 99px;
+      background: #202227;
+      transform: rotate(45deg);
+      transform-origin: left center;
+    }
+
+    .prism-spark {
+      position: absolute;
+      top: 7px;
+      right: 4px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #ff2d92;
+      box-shadow: 0 0 0 3px rgba(255,45,146,.08);
+      transition: transform 220ms ease;
+    }
+
+    .brand-portal:hover .prism-spark { transform: scale(1.25); }
+
+    .brand-copy { display: flex; align-items: baseline; gap: 6px; letter-spacing: -0.035em; }
+    .brand-name { font-size: 18px; font-weight: 750; line-height: 1; }
+    .brand-type {
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #a0a4ad;
+      transform: translateY(-1px);
+    }
+
+    /* Search */
+    .search-shell {
+      position: relative;
+      width: 100%;
+      border-radius: 20px;
+      padding: 1.5px;
+      isolation: isolate;
+    }
+
+    .search-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: var(--rainbow);
+      background-size: 220% 220%;
+      z-index: -2;
+      opacity: 0.8;
+      transition: opacity 220ms ease, filter 220ms ease;
+    }
+
+    .search-shell::after {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: 25px;
+      background: var(--rainbow);
+      background-size: 240% 240%;
+      z-index: -3;
+      opacity: 0;
+      filter: blur(16px);
+      transition: opacity 240ms ease;
+      pointer-events: none;
+    }
+
+    .search-shell:focus-within::before { opacity: 1; animation: rainbowShift 5s linear infinite; }
+    .search-shell.is-searching::before { animation: rainbowShift 1.5s linear infinite; filter: saturate(1.2); }
+    .search-shell.is-searching::after {
+      opacity: 0.42;
+      animation: rainbowShift 1.45s linear infinite, glowPulse 1.1s ease-in-out infinite alternate;
+    }
+
+    .search-box {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 8px;
+      border-radius: 18.5px;
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 12px 35px rgba(27, 31, 40, 0.075), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+    }
+
+    .picker-button {
+      height: 46px;
+      min-width: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 11px;
+      border: 0;
+      border-radius: 13px;
+      color: #555b66;
+      background: rgba(17, 24, 39, 0.045);
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+      white-space: nowrap;
+    }
+
+    .picker-button:hover,
+    .picker-button[aria-expanded="true"] {
+      color: #17181c;
+      background: rgba(17, 24, 39, 0.075);
+    }
+
+    .picker-button svg { width: 14px; height: 14px; flex: 0 0 14px; stroke-width: 2; }
+    .picker-button .picker-label { max-width: 126px; overflow: hidden; text-overflow: ellipsis; }
+    .city-button .picker-label { max-width: 115px; }
+
+    .chevron { transition: transform 180ms ease; }
+    .picker-button[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+
+    .search-divider { width: 1px; height: 25px; background: var(--line); flex: 0 0 1px; }
+
+    .search-input {
+      flex: 1;
+      min-width: 120px;
+      height: 48px;
+      border: 0;
+      outline: 0;
+      padding: 0 7px;
+      background: transparent;
+      color: var(--text);
+      font-size: clamp(16px, 1.4vw, 18px);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .search-input::placeholder { color: #9da1ab; font-weight: 450; }
+
+    .icon-button {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 14px;
+      background: transparent;
+      color: #555b66;
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .icon-button:hover { background: rgba(17, 24, 39, 0.055); color: #111318; transform: translateY(-1px); }
+    .icon-button:active { transform: scale(0.95); }
+
+    .mic-button.is-listening {
+      color: #ff2d55;
+      background: rgba(255, 45, 85, 0.09);
+      box-shadow: 0 0 0 6px rgba(255, 45, 85, 0.055);
+      animation: micPulse 1.15s ease-in-out infinite;
+    }
+
+    .search-button {
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      background: #15161a;
+      box-shadow: 0 8px 22px rgba(20, 22, 28, 0.17);
+    }
+
+    .search-button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--rainbow);
+      opacity: 0;
+      transition: opacity 180ms ease;
+    }
+
+    .search-button:hover::before,
+    .search-shell.is-searching .search-button::before { opacity: 1; }
+
+    .search-button svg,
+    .mic-button svg { position: relative; z-index: 1; width: 21px; height: 21px; stroke-width: 1.9; }
+
+    .search-status {
+      min-height: 20px;
+      margin: 8px 0 0;
+      padding-left: calc(160px + 22px);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .search-status strong { color: #333842; font-weight: 650; }
+
+    /* Modern searchable pickers */
+    .picker-panel {
+      position: absolute;
+      top: calc(100% + 12px);
+      z-index: 40;
+      display: none;
+      overflow: hidden;
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 22px;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: var(--shadow);
+      transform-origin: top center;
+    }
+
+    .picker-panel.is-open { display: block; animation: panelIn 180ms ease-out; }
+    .category-panel { left: 7px; width: min(760px, calc(100vw - 42px)); }
+    .city-panel { left: 155px; width: min(430px, calc(100vw - 42px)); }
+
+    .picker-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(249,250,252,.82);
+    }
+
+    .picker-search-wrap {
+      flex: 1;
+      min-width: 0;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 12px;
+      border: 1px solid rgba(17,24,39,.075);
+      border-radius: 13px;
+      background: #fff;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+    }
+
+    .picker-search-wrap:focus-within {
+      border-color: rgba(10,132,255,.28);
+      box-shadow: 0 0 0 4px rgba(10,132,255,.055);
+    }
+
+    .picker-search-wrap svg { width: 17px; height: 17px; color: #9297a2; flex: 0 0 17px; }
+    .picker-search {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .picker-search::placeholder { color: #a1a5ae; }
+
+    .picker-body {
+      max-height: min(62vh, 520px);
+      overflow: auto;
+      overscroll-behavior: contain;
+      padding: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(17,24,39,.18) transparent;
+    }
+
+    .all-option {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 9px;
+      padding: 11px 12px;
+      border: 1px solid rgba(17,24,39,.07);
+      border-radius: 13px;
+      background: linear-gradient(135deg, rgba(94,92,230,.04), rgba(255,45,146,.04));
+      color: #30333a;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .all-option:hover { border-color: rgba(17,24,39,.12); background: linear-gradient(135deg, rgba(94,92,230,.07), rgba(255,45,146,.07)); }
+
+    .all-option-icon {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      color: #4b4f58;
+      background: rgba(255,255,255,.9);
+      box-shadow: 0 4px 14px rgba(25,29,38,.06);
+    }
+
+    .all-option-icon svg { width: 15px; height: 15px; }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .category-group,
+    .city-group {
+      min-width: 0;
+      border: 1px solid rgba(17,24,39,.06);
+      border-radius: 15px;
+      background: rgba(249,250,252,.64);
+      padding: 10px;
+    }
+
+    .group-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin: 0 0 6px;
+      padding: 0 5px;
+      color: #8a8f99;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .075em;
+      text-transform: uppercase;
+    }
+
+    .group-dot { width: 6px; height: 6px; border-radius: 50%; background: linear-gradient(135deg,#0a84ff,#ff2d92); }
+
+    .picker-option {
+      width: 100%;
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 7px 8px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: #4d515b;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 580;
+      cursor: pointer;
+      transition: background 140ms ease, color 140ms ease, transform 140ms ease;
+    }
+
+    .picker-option:hover,
+    .picker-option:focus-visible { outline: none; color: #17181c; background: #fff; transform: translateX(1px); }
+
+    .picker-option.is-selected {
+      color: #17181c;
+      background: #fff;
+      box-shadow: 0 3px 12px rgba(25,29,38,.055);
+      font-weight: 700;
+    }
+
+    .selected-check { width: 15px; height: 15px; opacity: 0; color: #0a84ff; flex: 0 0 15px; }
+    .picker-option.is-selected .selected-check { opacity: 1; }
+
+    .city-list { display: grid; gap: 9px; }
+    .city-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 8px; }
+
+    .empty-state {
+      display: none;
+      padding: 34px 16px;
+      color: #8c919b;
+      text-align: center;
+      font-size: 13px;
+    }
+    .empty-state.is-visible { display: block; }
+
+    .picker-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      border-top: 1px solid var(--line);
+      color: #9499a3;
+      background: rgba(249,250,252,.82);
+      font-size: 10px;
+    }
+
+    .picker-foot strong { color: #656a74; font-weight: 700; }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: clamp(72px, 11vw, 148px) 0 80px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 6px 10px 6px 7px;
+      border: 1px solid rgba(17, 24, 39, 0.065);
+      border-radius: 999px;
+      background: rgba(255,255,255,.58);
+      color: #6e737e;
+      font-size: 12px;
+      font-weight: 650;
+      backdrop-filter: blur(12px);
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0a84ff, #ff2d92);
+      box-shadow: 0 0 0 4px rgba(10,132,255,.06);
+    }
+
+    .hero h1 {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: clamp(48px, 8vw, 92px);
+      line-height: .98;
+      letter-spacing: -0.065em;
+      font-weight: 760;
+    }
+
+    .hero h1 .spectrum-word {
+      position: relative;
+      display: inline-block;
+      color: transparent;
+      background: var(--rainbow);
+      background-size: 180% 180%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: rainbowShift 8s linear infinite;
+    }
+
+    .hero p {
+      max-width: 690px;
+      margin: 22px auto 0;
+      color: #7d828d;
+      font-size: clamp(16px, 1.7vw, 19px);
+      line-height: 1.65;
+      letter-spacing: -0.012em;
+    }
+
+    .quick-searches { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 28px; }
+
+    .quick-chip {
+      border: 1px solid rgba(17,24,39,.075);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,.68);
+      color: #6d727d;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 170ms ease, background 170ms ease, color 170ms ease, box-shadow 170ms ease;
+    }
+
+    .quick-chip:hover { transform: translateY(-2px); background: #fff; color: #23252a; box-shadow: 0 8px 20px rgba(28,33,43,.06); }
+
+    .ambient-orbit {
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      width: min(78vw, 760px);
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(17,24,39,.025);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .ambient-orbit::before,
+    .ambient-orbit::after { content: ""; position: absolute; border: 1px solid rgba(17,24,39,.025); border-radius: 50%; }
+    .ambient-orbit::before { inset: 12%; }
+    .ambient-orbit::after { inset: 28%; }
+
+
+
+    /* Results workspace */
+    .results-workspace {
+      width: min(1380px, calc(100% - 32px));
+      margin: 0 auto 90px;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 360ms ease, transform 360ms ease;
+    }
+
+    .results-workspace.is-visible { opacity: 1; transform: translateY(0); }
+
+    .results-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+      padding: 0 2px;
+    }
+
+    .results-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 7px;
+      color: #7f8490;
+      font-size: 11px;
+      font-weight: 760;
+      letter-spacing: .075em;
+      text-transform: uppercase;
+    }
+
+    .results-kicker::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0a84ff, #ff2d92);
+      box-shadow: 0 0 0 4px rgba(10,132,255,.055);
+    }
+
+    .results-head h2 {
+      margin: 0;
+      color: #17181c;
+      font-size: clamp(27px, 3.2vw, 42px);
+      line-height: 1.05;
+      letter-spacing: -.045em;
+    }
+
+    .results-head p {
+      margin: 8px 0 0;
+      color: #8a8f99;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .view-switch {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid rgba(17,24,39,.075);
+      border-radius: 14px;
+      background: rgba(250,250,252,.88);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.95);
+    }
+
+    .view-button {
+      width: 40px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 10px;
+      color: #8a8f99;
+      background: transparent;
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+
+    .view-button:hover { color: #32353b; transform: translateY(-1px); }
+    .view-button.is-active {
+      color: #17181c;
+      background: #fff;
+      box-shadow: 0 4px 14px rgba(20,24,31,.08);
+    }
+    .view-button svg { width: 17px; height: 17px; stroke-width: 1.9; }
+
+    .filter-dock {
+      position: sticky;
+      top: 10px;
+      z-index: 12;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 68px;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(17,24,39,.07);
+      border-radius: 22px;
+      background: rgba(255,255,255,.9);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      box-shadow: 0 14px 44px rgba(28,33,43,.055), inset 0 1px 0 rgba(255,255,255,.95);
+    }
+
+    .filter-leading {
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border-right: 1px solid rgba(17,24,39,.07);
+      color: #4b4f58;
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+    .filter-leading svg { width: 16px; height: 16px; }
+
+    .filter-chip,
+    .filter-select {
+      height: 40px;
+      border: 1px solid rgba(17,24,39,.075);
+      border-radius: 12px;
+      background: #fff;
+      color: #5f646e;
+      font-size: 12px;
+      font-weight: 650;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 11px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .filter-chip:hover,
+    .filter-select:hover { border-color: rgba(17,24,39,.14); color: #202227; }
+    .filter-chip:active { transform: scale(.98); }
+
+    .filter-chip.is-active {
+      position: relative;
+      color: #17181c;
+      border-color: transparent;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow) border-box;
+      box-shadow: 0 5px 16px rgba(29,33,42,.055);
+    }
+
+    .filter-chip svg { width: 14px; height: 14px; stroke-width: 2; }
+
+    .filter-select {
+      min-width: 116px;
+      padding: 0 31px 0 11px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238a8f99' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 10 4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+
+    .filter-spacer { flex: 1; min-width: 8px; }
+
+    .reset-filters {
+      height: 38px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 10px;
+      color: #979ba4;
+      background: transparent;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .reset-filters:hover { color: #282b31; background: rgba(17,24,39,.04); }
+
+    .sort-wrap {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding-left: 7px;
+      border-left: 1px solid rgba(17,24,39,.07);
+    }
+    .sort-label { color: #999da6; font-size: 10px; font-weight: 760; text-transform: uppercase; letter-spacing: .06em; }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .results-grid[data-view="list"] { grid-template-columns: 1fr; gap: 12px; }
+
+    .result-card {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid rgba(17,24,39,.07);
+      border-radius: 23px;
+      background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(253,253,255,.98));
+      box-shadow: 0 14px 46px rgba(26,31,41,.05);
+      transition: transform 220ms cubic-bezier(.2,.8,.2,1), box-shadow 220ms ease, border-color 220ms ease;
+    }
+
+    .result-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(17,24,39,.11);
+      box-shadow: 0 22px 60px rgba(26,31,41,.09);
+    }
+
+    .results-grid[data-view="grid"] .result-card { display: flex; flex-direction: column; }
+    .results-grid[data-view="list"] .result-card {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr) auto;
+      align-items: stretch;
+      min-height: 176px;
+    }
+
+    .result-photo {
+      position: relative;
+      overflow: hidden;
+      margin: 0;
+      background: #f1f2f5;
+    }
+
+    .results-grid[data-view="grid"] .result-photo { aspect-ratio: 16 / 10; }
+    .results-grid[data-view="list"] .result-photo { min-height: 176px; }
+
+    .result-photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform 500ms cubic-bezier(.2,.8,.2,1);
+    }
+    .result-card:hover .result-photo img { transform: scale(1.035); }
+
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 45%, rgba(12,14,18,.32) 100%);
+      pointer-events: none;
+    }
+
+    .photo-badges {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .mini-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 25px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.91);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #444851;
+      font-size: 9px;
+      font-weight: 780;
+      letter-spacing: .02em;
+      box-shadow: 0 5px 16px rgba(14,16,21,.12);
+    }
+
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #2cc65d; box-shadow: 0 0 0 3px rgba(44,198,93,.1); }
+    .mini-badge.is-closed .status-dot { background: #ff5a5f; box-shadow: 0 0 0 3px rgba(255,90,95,.1); }
+
+    .save-place {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      color: #444851;
+      background: rgba(255,255,255,.91);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 5px 16px rgba(14,16,21,.12);
+      cursor: pointer;
+      transition: transform 160ms ease, color 160ms ease;
+    }
+    .save-place:hover { transform: scale(1.06); color: #ff2d92; }
+    .save-place.is-saved { color: #ff2d92; }
+    .save-place svg { width: 15px; height: 15px; }
+
+    .result-main {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+    }
+
+    .result-topline {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .result-name {
+      margin: 0;
+      overflow: hidden;
+      color: #1b1d21;
+      font-size: 17px;
+      font-weight: 760;
+      line-height: 1.2;
+      letter-spacing: -.025em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .result-rating {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #24262b;
+      font-size: 11px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .result-rating .star {
+      width: 17px;
+      height: 17px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      color: #fff;
+      background: linear-gradient(135deg,#ff9500,#ff2d92);
+      font-size: 10px;
+      box-shadow: 0 4px 12px rgba(255,149,0,.16);
+    }
+    .rating-count { color: #9a9ea7; font-weight: 600; }
+
+    .result-subline {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 7px;
+      color: #8b909a;
+      font-size: 10.5px;
+      font-weight: 620;
+    }
+    .dot-sep { width: 3px; height: 3px; border-radius: 50%; background: #c2c5cb; }
+    .open-text { color: #239a49; }
+    .closed-text { color: #e04c54; }
+
+    .result-desc {
+      display: -webkit-box;
+      overflow: hidden;
+      margin: 11px 0 12px;
+      color: #737884;
+      font-size: 11.5px;
+      line-height: 1.55;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .micro-details {
+      display: grid;
+      gap: 5px;
+      margin-top: auto;
+    }
+
+    .micro-line {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #8c919b;
+      font-size: 10.5px;
+      line-height: 1.35;
+    }
+    .micro-line svg { width: 13px; height: 13px; flex: 0 0 13px; color: #a4a8b0; stroke-width: 1.8; }
+    .micro-line span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .micro-line a { color: inherit; text-decoration: none; }
+    .micro-line a:hover { color: #202227; }
+
+    .result-side {
+      display: flex;
+      gap: 7px;
+      padding: 0 16px 16px;
+    }
+
+    .results-grid[data-view="list"] .result-side {
+      width: 148px;
+      flex-direction: column;
+      justify-content: center;
+      padding: 16px 16px 16px 4px;
+    }
+
+    .card-action {
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex: 1;
+      border: 1px solid rgba(17,24,39,.075);
+      border-radius: 11px;
+      background: #fff;
+      color: #555a64;
+      font-size: 10.5px;
+      font-weight: 720;
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
+    }
+    .card-action:hover { transform: translateY(-1px); color: #17181c; border-color: rgba(17,24,39,.13); box-shadow: 0 6px 16px rgba(25,29,38,.055); }
+    .card-action.primary { color: #fff; border-color: #16171a; background: #16171a; }
+    .card-action.primary:hover { color: #fff; }
+    .card-action svg { width: 13px; height: 13px; }
+
+    .no-results {
+      display: none;
+      padding: 70px 20px;
+      border: 1px dashed rgba(17,24,39,.11);
+      border-radius: 24px;
+      color: #898e98;
+      text-align: center;
+      background: rgba(250,250,252,.52);
+    }
+    .no-results.is-visible { display: block; }
+
+    .demo-note {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin: 14px 2px 0;
+      color: #a0a4ad;
+      font-size: 10px;
+    }
+    .demo-note svg { width: 13px; height: 13px; }
+
+    /* Unified Prism rainbow-border system */
+    body.has-results .hero { display: none; }
+    body.has-results .results-workspace { margin-top: 28px; }
+
+    .clear-search-button[hidden] { display: none !important; }
+    .clear-search-button {
+      color: #727780;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow-soft) border-box !important;
+    }
+    .clear-search-button:hover {
+      color: #17181c;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow) border-box !important;
+    }
+
+    .picker-button,
+    .icon-button,
+    .quick-chip,
+    .all-option,
+    .picker-option,
+    .view-button,
+    .filter-chip,
+    .reset-filters,
+    .save-place,
+    .card-action {
+      border: 1px solid transparent;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow-soft) border-box;
+    }
+
+    .picker-button:hover,
+    .picker-button[aria-expanded="true"],
+    .icon-button:hover,
+    .quick-chip:hover,
+    .all-option:hover,
+    .picker-option:hover,
+    .picker-option:focus-visible,
+    .view-button:hover,
+    .reset-filters:hover,
+    .save-place:hover,
+    .card-action:hover {
+      border-color: transparent;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow) border-box;
+    }
+
+    .search-button,
+    .card-action.primary {
+      border: 1px solid transparent !important;
+      background: linear-gradient(#15161a,#15161a) padding-box, var(--rainbow) border-box !important;
+    }
+
+    .search-input {
+      height: 46px;
+      padding: 0 14px;
+      border: 1px solid transparent;
+      border-radius: 13px;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow-soft) border-box;
+      transition: background 180ms ease, box-shadow 180ms ease;
+    }
+    .search-input:focus {
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow) border-box;
+      box-shadow: 0 0 0 3px rgba(94,92,230,.045);
+    }
+
+    .picker-search-wrap {
+      border: 1px solid transparent;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow-soft) border-box;
+    }
+    .picker-search-wrap:focus-within {
+      border-color: transparent;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow) border-box;
+      box-shadow: 0 0 0 3px rgba(94,92,230,.045);
+    }
+
+    .picker-panel,
+    .category-group,
+    .city-group,
+    .results-head,
+    .filter-dock,
+    .result-card,
+    .no-results {
+      border: 1px solid transparent;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow-soft) border-box;
+    }
+
+    .results-head {
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 18px 20px;
+      border-radius: 22px;
+      box-shadow: 0 12px 36px rgba(28,33,43,.04);
+    }
+
+    .filter-dock {
+      background: linear-gradient(rgba(255,255,255,.96),rgba(255,255,255,.96)) padding-box, var(--rainbow-soft) border-box;
+    }
+
+    .result-card:hover {
+      border-color: transparent;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow) border-box;
+    }
+
+    .view-switch {
+      border: 1px solid transparent;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow-soft) border-box;
+    }
+
+    .view-button.is-active,
+    .filter-chip.is-active,
+    .picker-option.is-selected {
+      border: 1px solid transparent;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow) border-box;
+    }
+
+    .filter-select {
+      border: 1px solid transparent;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238a8f99' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 10 4 4 4-4'/%3E%3C/svg%3E"),
+        linear-gradient(#fff,#fff),
+        var(--rainbow-soft);
+      background-repeat: no-repeat, no-repeat, no-repeat;
+      background-position: right 10px center, 0 0, 0 0;
+      background-size: 14px 14px, 100% 100%, 100% 100%;
+      background-origin: padding-box, padding-box, border-box;
+      background-clip: padding-box, padding-box, border-box;
+    }
+    .filter-select:hover,
+    .filter-select:focus {
+      border-color: transparent;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23555b66' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 10 4 4 4-4'/%3E%3C/svg%3E"),
+        linear-gradient(#fff,#fff),
+        var(--rainbow);
+      box-shadow: 0 0 0 3px rgba(94,92,230,.04);
+    }
+
+    .eyebrow {
+      border: 1px solid transparent;
+      background: linear-gradient(rgba(255,255,255,.92),rgba(255,255,255,.92)) padding-box, var(--rainbow-soft) border-box;
+    }
+
+
+    /* ---------------------------------------------------------
+       Single-border cleanup
+       Keep one Prism outline per visual container. Nested controls
+       use clean fills so the UI never looks double-framed.
+       --------------------------------------------------------- */
+
+    /* Main search: one rainbow outline on the search shell only. */
+    .search-box .picker-button,
+    .search-box .icon-button,
+    .search-box .search-input {
+      border: 0 !important;
+      box-shadow: none;
+    }
+
+    .search-box .picker-button {
+      background: rgba(17,24,39,.04) !important;
+    }
+
+    .search-box .picker-button:hover,
+    .search-box .picker-button[aria-expanded="true"] {
+      background: rgba(17,24,39,.07) !important;
+    }
+
+    .search-box .search-input,
+    .search-box .search-input:focus {
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+
+    .search-box .clear-search-button,
+    .search-box .mic-button {
+      background: transparent !important;
+    }
+
+    .search-box .clear-search-button:hover,
+    .search-box .mic-button:hover {
+      background: rgba(17,24,39,.05) !important;
+    }
+
+    .search-box .search-button,
+    .search-box .search-button:hover {
+      border: 0 !important;
+      background: #15161a !important;
+    }
+
+    .search-box .search-button::before {
+      border-radius: inherit;
+    }
+
+    /* Dropdowns: keep the panel outline; remove nested frames. */
+    .picker-panel .picker-search-wrap,
+    .picker-panel .category-group,
+    .picker-panel .city-group,
+    .picker-panel .all-option,
+    .picker-panel .picker-option {
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .picker-panel .picker-search-wrap {
+      background: #f7f8fa !important;
+    }
+
+    .picker-panel .picker-search-wrap:focus-within {
+      background: #f3f4f7 !important;
+      box-shadow: 0 0 0 3px rgba(94,92,230,.045) !important;
+    }
+
+    .picker-panel .category-group,
+    .picker-panel .city-group {
+      background: transparent !important;
+    }
+
+    .picker-panel .all-option,
+    .picker-panel .picker-option {
+      background: transparent !important;
+    }
+
+    .picker-panel .all-option:hover,
+    .picker-panel .picker-option:hover,
+    .picker-panel .picker-option:focus-visible {
+      background: linear-gradient(135deg, rgba(94,92,230,.06), rgba(255,45,146,.06)) !important;
+    }
+
+    .picker-panel .picker-option.is-selected {
+      background: linear-gradient(135deg, rgba(10,132,255,.08), rgba(255,45,146,.08)) !important;
+    }
+
+    /* Results header: one outer outline; view switch is borderless. */
+    .results-head .view-switch,
+    .results-head .view-button {
+      border: 0 !important;
+    }
+
+    .results-head .view-switch {
+      background: #f6f7f9 !important;
+    }
+
+    .results-head .view-button {
+      background: transparent !important;
+    }
+
+    .results-head .view-button.is-active {
+      background: #fff !important;
+      box-shadow: 0 4px 14px rgba(20,24,31,.08);
+    }
+
+    /* Advanced filters: one outline around the dock, not every control. */
+    .filter-dock .filter-chip,
+    .filter-dock .filter-select,
+    .filter-dock .reset-filters {
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .filter-dock .filter-chip,
+    .filter-dock .filter-select {
+      background-color: #f7f8fa !important;
+    }
+
+    .filter-dock .filter-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238a8f99' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 10 4 4 4-4'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 10px center !important;
+      background-size: 14px 14px !important;
+    }
+
+    .filter-dock .filter-chip:hover,
+    .filter-dock .filter-select:hover,
+    .filter-dock .filter-select:focus {
+      background-color: #f1f2f5 !important;
+      box-shadow: none !important;
+    }
+
+    .filter-dock .filter-chip.is-active {
+      background: linear-gradient(135deg, rgba(10,132,255,.09), rgba(255,45,146,.09)) !important;
+      color: #17181c;
+    }
+
+    .filter-dock .reset-filters {
+      background: transparent !important;
+    }
+
+    /* Listing cards: card gets the Prism outline; nested actions stay clean. */
+    .result-card .save-place,
+    .result-card .card-action {
+      border: 0 !important;
+    }
+
+    .result-card .save-place {
+      background: rgba(255,255,255,.94) !important;
+    }
+
+    .result-card .card-action {
+      background: #f6f7f9 !important;
+      box-shadow: none !important;
+    }
+
+    .result-card .card-action:hover {
+      background: #eff1f4 !important;
+      box-shadow: none !important;
+    }
+
+    .result-card .card-action.primary,
+    .result-card .card-action.primary:hover {
+      background: #15161a !important;
+      color: #fff;
+    }
+
+    /* Never render an extra outline around the empty-state text. */
+    .no-results {
+      border-style: solid;
+    }
+
+
+    /* Listing detail view -------------------------------------------------- */
+    .detail-page {
+      width: min(1380px, calc(100% - 32px));
+      margin: 28px auto 90px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 320ms ease, transform 320ms ease;
+    }
+
+    .detail-page.is-visible { opacity: 1; transform: translateY(0); }
+
+    .detail-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .detail-back,
+    .detail-top-action {
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 13px;
+      border: 0;
+      border-radius: 12px;
+      color: #535862;
+      background: #f6f7f9;
+      font-size: 11px;
+      font-weight: 760;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+    }
+
+    .detail-back:hover,
+    .detail-top-action:hover { transform: translateY(-1px); color: #17181c; background: #eef0f3; }
+    .detail-back svg,
+    .detail-top-action svg { width: 14px; height: 14px; stroke-width: 2; }
+
+    .detail-top-actions { display: flex; gap: 8px; }
+
+    .prism-panel {
+      border: 1px solid transparent;
+      background: linear-gradient(#fff,#fff) padding-box, var(--rainbow-soft) border-box;
+      border-radius: 24px;
+      box-shadow: 0 14px 44px rgba(27,31,40,.045);
+    }
+
+    .detail-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(340px, .7fr);
+      min-height: 390px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .detail-gallery {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 210px;
+      gap: 5px;
+      min-height: 390px;
+      background: #f5f6f8;
+    }
+
+    .detail-main-photo,
+    .detail-thumb { position: relative; overflow: hidden; margin: 0; background: #eef0f3; }
+    .detail-main-photo img,
+    .detail-thumb img { width: 100%; height: 100%; display: block; object-fit: cover; }
+    .detail-thumb-stack { display: grid; grid-template-rows: 1fr 1fr; gap: 5px; }
+    .detail-thumb img { filter: saturate(.94); }
+
+    .photo-count {
+      position: absolute;
+      right: 13px;
+      bottom: 13px;
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      border-radius: 999px;
+      color: #333740;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      font-size: 10px;
+      font-weight: 760;
+      box-shadow: 0 6px 18px rgba(15,18,24,.12);
+    }
+    .photo-count svg { width: 13px; height: 13px; }
+
+    .detail-summary {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(24px, 3vw, 40px);
+    }
+
+    .detail-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 10px;
+      color: #8b909a;
+      font-size: 10px;
+      font-weight: 780;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    .detail-eyebrow::before { content:""; width: 7px; height: 7px; border-radius: 50%; background: linear-gradient(135deg,#0a84ff,#ff2d92); }
+
+    .detail-summary h1 {
+      margin: 0;
+      color: #17181c;
+      font-size: clamp(30px, 3.7vw, 54px);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+
+    .detail-rating-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      color: #555a64;
+      font-size: 12px;
+      font-weight: 680;
+    }
+
+    .detail-rating-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 9px;
+      border-radius: 10px;
+      color: #1f2227;
+      background: #f5f6f8;
+      font-weight: 800;
+    }
+    .detail-rating-pill .star { color: #ff9500; font-size: 12px; }
+    .detail-status.open { color: #239a49; }
+    .detail-status.closed { color: #e04c54; }
+
+    .detail-summary-copy {
+      margin: 17px 0 0;
+      color: #747984;
+      font-size: 12.5px;
+      line-height: 1.68;
+    }
+
+    .detail-quick-facts {
+      display: grid;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .detail-fact { display: flex; align-items: center; gap: 9px; min-width: 0; color: #777c86; font-size: 11px; }
+    .detail-fact svg { width: 15px; height: 15px; flex: 0 0 15px; color: #969aa3; stroke-width: 1.8; }
+    .detail-fact span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .similar-section { margin-bottom: 16px; padding: 18px; }
+    .section-heading-row { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:13px; }
+    .section-kicker { color:#9a9ea7; font-size:9px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .section-heading-row h2,
+    .detail-section h2,
+    .side-panel h3 { margin: 4px 0 0; color:#1b1d21; letter-spacing:-.035em; }
+    .section-heading-row h2 { font-size: 21px; }
+    .section-note { color:#a0a4ad; font-size:10px; }
+
+    .similar-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .similar-card {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      align-items: center;
+      min-width: 0;
+      min-height: 92px;
+      overflow: hidden;
+      border: 0;
+      border-radius: 16px;
+      color: inherit;
+      background: #f7f8fa;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+    .similar-card:hover { transform: translateY(-2px); background: #f1f3f6; }
+    .similar-card img { width: 88px; height: 92px; object-fit: cover; display:block; }
+    .similar-card-copy { min-width:0; padding: 12px; }
+    .similar-card-name { margin:0; overflow:hidden; color:#24272c; font-size:12px; font-weight:780; text-overflow:ellipsis; white-space:nowrap; }
+    .similar-card-meta { display:flex; gap:7px; align-items:center; margin-top:6px; color:#8d929c; font-size:9.5px; }
+    .similar-card-rating { color:#353941; font-weight:760; }
+    .similar-card-rating::before { content:"★"; color:#ff9500; margin-right:3px; }
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 4fr) minmax(220px, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .detail-main-column { display:grid; gap:16px; min-width:0; }
+    .detail-sidebar { display:grid; gap:16px; min-width:0; position:sticky; top:14px; }
+    .detail-section,
+    .side-panel { padding: 22px; }
+    .detail-section h2 { font-size: 20px; }
+    .side-panel h3 { font-size: 16px; }
+    .detail-section p { margin: 12px 0 0; color:#747984; font-size:12px; line-height:1.72; }
+
+    .feature-grid {
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:8px;
+      margin-top:16px;
+    }
+    .feature-item { display:flex; align-items:center; gap:9px; min-height:48px; padding:10px 11px; border-radius:13px; background:#f7f8fa; color:#646973; font-size:10.5px; font-weight:680; }
+    .feature-item svg { width:15px; height:15px; color:#555b66; stroke-width:1.8; }
+
+    .info-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:16px; }
+    .info-block { padding:15px; border-radius:15px; background:#f7f8fa; }
+    .info-label { color:#9a9ea7; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; }
+    .info-value { margin-top:6px; color:#33373e; font-size:11px; line-height:1.5; }
+
+    .hours-list { display:grid; gap:7px; margin-top:15px; }
+    .hours-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:7px; border-bottom:1px solid rgba(17,24,39,.055); color:#747984; font-size:10.5px; }
+    .hours-row:last-child { border-bottom:0; padding-bottom:0; }
+    .hours-row strong { color:#3f434b; font-weight:700; }
+
+    .tag-cloud { display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; }
+    .detail-tag { display:inline-flex; align-items:center; min-height:28px; padding:0 9px; border-radius:999px; background:#f4f5f7; color:#666b75; font-size:9.5px; font-weight:700; }
+
+    .side-related-list { display:grid; gap:8px; margin-top:13px; }
+    .side-related-item { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:38px; padding:0 10px; border-radius:11px; background:#f7f8fa; color:#5f646e; font-size:10px; font-weight:700; }
+    .side-related-item span:last-child { color:#adb0b7; }
+
+    .detail-actions-panel { display:grid; gap:8px; }
+    .detail-action-wide { min-height:42px; display:flex; align-items:center; justify-content:center; gap:7px; border:0; border-radius:12px; background:#f5f6f8; color:#4f545d; font-size:10.5px; font-weight:760; cursor:pointer; }
+    .detail-action-wide.primary { background:#15161a; color:#fff; }
+    .detail-action-wide svg { width:14px; height:14px; }
+
+    @media (max-width: 1050px) {
+      .detail-hero { grid-template-columns: 1fr; }
+      .detail-gallery { min-height: 330px; }
+      .detail-layout { grid-template-columns: minmax(0, 1fr) 260px; }
+      .feature-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .detail-page { width:min(100% - 24px,1380px); margin-top:20px; }
+      .detail-topbar { align-items:flex-start; }
+      .detail-top-actions { display:none; }
+      .detail-gallery { grid-template-columns:1fr; min-height:280px; }
+      .detail-thumb-stack { display:none; }
+      .detail-main-photo { min-height:280px; }
+      .similar-strip { grid-template-columns:1fr; }
+      .similar-card { grid-template-columns:78px minmax(0,1fr); }
+      .similar-card img { width:78px; height:82px; }
+      .detail-layout { grid-template-columns:1fr; }
+      .detail-sidebar { position:static; grid-row:auto; }
+      .feature-grid,
+      .info-grid { grid-template-columns:1fr; }
+      .detail-section,.side-panel { padding:18px; }
+      .detail-summary { padding:24px 20px; }
+    }
+
+    @keyframes rainbowShift { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+    @keyframes glowPulse { from { transform: scale(0.996); filter: blur(13px); } to { transform: scale(1.008); filter: blur(20px); } }
+    @keyframes micPulse { 0%, 100% { box-shadow: 0 0 0 4px rgba(255, 45, 85, 0.045); } 50% { box-shadow: 0 0 0 9px rgba(255, 45, 85, 0.075); } }
+    @keyframes panelIn { from { opacity: 0; transform: translateY(-5px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    @media (max-width: 1120px) {
+      .picker-button .picker-label { max-width: 92px; }
+      .city-button .picker-label { max-width: 88px; }
+      .picker-button { padding-inline: 9px; }
+    }
+
+    @media (max-width: 900px) {
+      .site-header { padding: 14px 14px 0; }
+      .header-rail { grid-template-columns: 1fr; gap: 12px; }
+      .brand-portal { width: fit-content; }
+      .brand-portal::after { display: none; }
+      .search-status { padding-left: 2px; margin-top: 7px; }
+      .category-panel, .city-panel { left: 0; width: min(100%, calc(100vw - 28px)); }
+      .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 680px) {
+      .brand-type { display: none; }
+      .prism-mark { width: 34px; height: 34px; flex-basis: 34px; }
+      .brand-name { font-size: 17px; }
+
+      .search-box { min-height: 58px; padding: 5px 6px; gap: 5px; }
+      .picker-button { width: 42px; min-width: 42px; height: 44px; padding: 0; }
+      .picker-button .picker-label,
+      .picker-button .chevron { display: none; }
+      .search-divider { display: none; }
+
+      .icon-button { width: 44px; height: 44px; flex-basis: 44px; border-radius: 12px; }
+      .search-input { min-width: 80px; height: 44px; padding-inline: 5px; font-size: 15px; }
+      .hero { width: min(100% - 28px, 1120px); padding-top: 82px; }
+      .hero h1 { font-size: clamp(44px, 15vw, 68px); }
+      .category-grid { grid-template-columns: 1fr; }
+      .city-options { grid-template-columns: 1fr; }
+      .picker-panel { border-radius: 18px; }
+      .picker-body { max-height: 58vh; }
+    }
+
+
+
+    @media (max-width: 1080px) {
+      .results-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filter-dock { overflow-x: auto; scrollbar-width: none; }
+      .filter-dock::-webkit-scrollbar { display: none; }
+      .filter-spacer { min-width: 0; }
+      .sort-wrap { margin-left: auto; }
+    }
+
+    @media (max-width: 760px) {
+      .results-workspace { width: min(100% - 24px, 1380px); }
+      .results-head { align-items: center; }
+      .results-head p { max-width: 72vw; }
+      .results-grid { grid-template-columns: 1fr; }
+      .results-grid[data-view="list"] .result-card { grid-template-columns: 132px minmax(0,1fr); min-height: 160px; }
+      .results-grid[data-view="list"] .result-photo { min-height: 160px; }
+      .results-grid[data-view="list"] .result-side { grid-column: 1 / -1; width: auto; flex-direction: row; padding: 0 12px 12px; }
+      .filter-leading { display: none; }
+      .filter-dock { border-radius: 18px; }
+    }
+
+    @media (max-width: 520px) {
+      .results-head { align-items: flex-end; }
+      .results-head p { font-size: 11px; }
+      .results-grid[data-view="list"] .result-card { grid-template-columns: 108px minmax(0,1fr); }
+      .results-grid[data-view="list"] .result-photo { min-height: 170px; }
+      .results-grid[data-view="list"] .result-main { padding: 13px 12px; }
+      .results-grid[data-view="list"] .result-desc { display: none; }
+      .result-name { font-size: 15px; }
+      .view-switch { flex: 0 0 auto; }
+      .filter-select { min-width: 108px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-rail">
+      <a class="brand-portal" href="#" aria-label="Prism Directory home">
+        <span class="prism-mark" aria-hidden="true">
+          <span class="prism-lens"></span>
+          <span class="prism-spark"></span>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-name">Prism</span>
+          <span class="brand-type">directory</span>
+        </span>
+      </a>
+
+      <form class="search-shell" id="searchShell" autocomplete="off">
+        <div class="search-box">
+          <button class="picker-button category-button" id="categoryButton" type="button" aria-expanded="false" aria-controls="categoryPanel" aria-label="Choose category">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 7h16"></path><path d="M7 12h10"></path><path d="M10 17h4"></path>
+            </svg>
+            <span class="picker-label" id="categoryLabel">Explore</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 10 4 4 4-4"></path></svg>
+          </button>
+
+          <span class="search-divider" aria-hidden="true"></span>
+
+          <button class="picker-button city-button" id="cityButton" type="button" aria-expanded="false" aria-controls="cityPanel" aria-label="Choose New Zealand city">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle>
+            </svg>
+            <span class="picker-label" id="cityLabel">New Zealand</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 10 4 4 4-4"></path></svg>
+          </button>
+
+          <span class="search-divider" aria-hidden="true"></span>
+
+          <input
+            id="searchInput"
+            class="search-input"
+            type="search"
+            name="search"
+            placeholder="Search business, place or keyword..."
+            aria-label="Search Prism Directory"
+          />
+
+          <button class="icon-button clear-search-button" id="clearSearchButton" type="button" aria-label="Clear search" title="Clear search" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 7l10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+
+          <button class="icon-button mic-button" id="micButton" type="button" aria-label="Search by voice" title="Search by voice">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="2.5" width="6" height="12" rx="3"></rect>
+              <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0"></path>
+              <path d="M12 18v3.5"></path>
+              <path d="M8.5 21.5h7"></path>
+            </svg>
+          </button>
+
+          <button class="icon-button search-button" type="submit" aria-label="Search" title="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5"></circle>
+              <path d="m16 16 4.5 4.5"></path>
+            </svg>
+          </button>
+        </div>
+
+        <section class="picker-panel category-panel" id="categoryPanel" aria-label="Explore categories">
+          <div class="picker-head">
+            <label class="picker-search-wrap" for="categorySearch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
+              <input class="picker-search" id="categorySearch" type="text" placeholder="Search categories — cafe, museum, hiking trail..." />
+            </label>
+          </div>
+          <div class="picker-body" id="categoryBody">
+            <button class="all-option" type="button" data-category="All categories">
+              <span class="all-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v8M8 12h8"></path></svg>
+              </span>
+              <span>Explore all categories</span>
+            </button>
+            <div class="category-grid" id="categoryGrid"></div>
+            <div class="empty-state" id="categoryEmpty">No matching category. Try a broader term.</div>
+          </div>
+          <div class="picker-foot"><span>New Zealand-focused directory taxonomy</span><strong id="categoryCount"></strong></div>
+        </section>
+
+        <section class="picker-panel city-panel" id="cityPanel" aria-label="Choose New Zealand city or town">
+          <div class="picker-head">
+            <label class="picker-search-wrap" for="citySearch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
+              <input class="picker-search" id="citySearch" type="text" placeholder="Search city or town..." />
+            </label>
+          </div>
+          <div class="picker-body" id="cityBody">
+            <button class="all-option" type="button" data-city="All New Zealand">
+              <span class="all-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z"></path><path d="M3 12h18M12 3c2.2 2.4 3.3 5.4 3.3 9S14.2 18.6 12 21M12 3C9.8 5.4 8.7 8.4 8.7 12S9.8 18.6 12 21"></path></svg>
+              </span>
+              <span>All New Zealand</span>
+            </button>
+            <div class="city-list" id="cityList"></div>
+            <div class="empty-state" id="cityEmpty">No matching New Zealand location.</div>
+          </div>
+          <div class="picker-foot"><span>Major cities, regional centres and towns</span><strong id="cityCount"></strong></div>
+        </section>
+      </form>
+    </div>
+
+    <div class="search-status" id="searchStatus" aria-live="polite"></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="ambient-orbit" aria-hidden="true"></div>
+
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        Discover Aotearoa, one place at a time.
+      </div>
+
+      <h1>Find the right <span class="spectrum-word">place.</span></h1>
+      <p>
+        Choose a category, pick a New Zealand city, or search by business name and keyword — all through one clean discovery experience.
+      </p>
+
+      <div class="quick-searches" aria-label="Popular searches">
+        <button class="quick-chip" type="button" data-query="Coffee" data-category="Cafes & Coffee Shops">Coffee</button>
+        <button class="quick-chip" type="button" data-query="Indian food" data-category="Indian Restaurants">Indian food</button>
+        <button class="quick-chip" type="button" data-query="Things to do" data-category="Attractions & Things to Do">Things to do</button>
+        <button class="quick-chip" type="button" data-query="Hiking" data-category="Hiking & Walking Trails">Hiking</button>
+        <button class="quick-chip" type="button" data-query="Museum" data-category="Museums">Museums</button>
+      </div>
+    </section>
+
+    <section class="results-workspace" id="resultsSection" hidden aria-live="polite">
+      <div class="results-head">
+        <div>
+          <div class="results-kicker">Prism discovery</div>
+          <h2 id="resultsTitle">Places worth a closer look</h2>
+          <p id="resultsMeta">Demo results matched to your search.</p>
+        </div>
+
+        <div class="view-switch" role="group" aria-label="Results layout">
+          <button class="view-button is-active" id="listViewButton" type="button" aria-label="List view" title="List view">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"></path><path d="M4 6h.01M4 12h.01M4 18h.01"></path></svg>
+          </button>
+          <button class="view-button" id="gridViewButton" type="button" aria-label="Grid view" title="Grid view">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-dock" aria-label="Advanced result filters">
+        <div class="filter-leading">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>
+          Refine
+        </div>
+
+        <button class="filter-chip" id="openNowFilter" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l3 2"></path></svg>
+          Open now
+        </button>
+
+        <select class="filter-select" id="ratingFilter" aria-label="Minimum rating">
+          <option value="0">Any rating</option>
+          <option value="4">4.0+ rating</option>
+          <option value="4.5">4.5+ rating</option>
+          <option value="4.8">4.8+ rating</option>
+        </select>
+
+        <select class="filter-select" id="distanceFilter" aria-label="Maximum distance">
+          <option value="999">Any distance</option>
+          <option value="1">Within 1 km</option>
+          <option value="3">Within 3 km</option>
+          <option value="5">Within 5 km</option>
+          <option value="10">Within 10 km</option>
+        </select>
+
+        <select class="filter-select" id="priceFilter" aria-label="Price level">
+          <option value="all">Any price</option>
+          <option value="$">$ Budget</option>
+          <option value="$$">$$ Moderate</option>
+          <option value="$$$">$$$ Premium</option>
+        </select>
+
+        <button class="filter-chip" id="websiteFilter" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M4 12h16M12 4c2.2 2.3 3.3 5 3.3 8S14.2 17.7 12 20M12 4C9.8 6.3 8.7 9 8.7 12S9.8 17.7 12 20"></path></svg>
+          Website
+        </button>
+
+        <button class="filter-chip" id="phoneFilter" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 5 6c-1 1 0 5 4 9s8 5 9 4l2-2-4-3-2 2c-1-1-3-2-4-3s-2-3-3-4l2-2-2-3Z"></path></svg>
+          Phone
+        </button>
+
+        <button class="reset-filters" id="resetFilters" type="button">Reset</button>
+        <div class="filter-spacer"></div>
+
+        <div class="sort-wrap">
+          <span class="sort-label">Sort</span>
+          <select class="filter-select" id="sortFilter" aria-label="Sort results">
+            <option value="recommended">Recommended</option>
+            <option value="rating">Top rated</option>
+            <option value="reviews">Most reviewed</option>
+            <option value="distance">Nearest</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="results-grid" id="resultsGrid" data-view="list"></div>
+      <div class="no-results" id="noResults">No demo listings match these filters. Try resetting one or more filters.</div>
+
+      <div class="demo-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+        Demo listing data for UI prototyping. Replace with Google Places / your backend response later.
+      </div>
+    </section>
+
+    <section class="detail-page" id="detailPage" hidden aria-live="polite">
+      <div class="detail-topbar">
+        <button class="detail-back" id="backToResults" type="button" aria-label="Back to search results">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+          Back to results
+        </button>
+        <div class="detail-top-actions">
+          <button class="detail-top-action" id="detailShare" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2"></circle><circle cx="6" cy="12" r="2"></circle><circle cx="18" cy="19" r="2"></circle><path d="m8 11 8-5M8 13l8 5"></path></svg>Share</button>
+          <button class="detail-top-action" id="detailSave" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"></path></svg>Save</button>
+        </div>
+      </div>
+
+      <div class="detail-hero prism-panel" id="detailHero"></div>
+
+      <section class="similar-section prism-panel" aria-labelledby="similarHeading">
+        <div class="section-heading-row">
+          <div><div class="section-kicker">Discover nearby</div><h2 id="similarHeading">Similar places</h2></div>
+          <div class="section-note">Based on category, rating and distance</div>
+        </div>
+        <div class="similar-strip" id="similarStrip"></div>
+      </section>
+
+      <div class="detail-layout">
+        <div class="detail-main-column" id="detailMainColumn"></div>
+        <aside class="detail-sidebar" id="detailSidebar" aria-label="Tags and related places"></aside>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const categoryGroups = [
+      { name: "Food & Drink", items: [
+        "Restaurants", "Cafes & Coffee Shops", "Bakeries", "Bars & Pubs", "Breweries", "Wineries & Cellar Doors", "Cocktail Bars", "Fast Food", "Food Courts", "Food Trucks", "Takeaways", "Dessert Shops", "Ice Cream & Gelato", "Juice & Smoothie Bars", "Breakfast & Brunch", "Fine Dining", "Buffet Restaurants", "Vegetarian & Vegan", "Halal Food", "Indian Restaurants", "Chinese Restaurants", "Japanese Restaurants", "Korean Restaurants", "Thai Restaurants", "Vietnamese Restaurants", "Italian Restaurants", "Mexican Restaurants", "Mediterranean Restaurants", "Seafood Restaurants", "Pizza", "Burgers", "Fish & Chips"
+      ]},
+      { name: "Shopping & Retail", items: [
+        "Shopping Centres & Malls", "Supermarkets", "Convenience Stores", "Farmers Markets", "Department Stores", "Clothing & Fashion", "Shoes & Footwear", "Jewellery", "Beauty & Cosmetics", "Electronics", "Mobile Phone Stores", "Computers & IT Retail", "Furniture", "Homeware", "Hardware Stores", "Garden Centres", "Florists", "Bookshops", "Gift Shops", "Toy Stores", "Baby & Kids Stores", "Sports Stores", "Outdoor Stores", "Bicycle Shops", "Pet Stores", "Liquor Stores", "Specialty Food Stores", "Second-hand & Op Shops", "Art & Craft Stores", "Music Stores"
+      ]},
+      { name: "Accommodation", items: [
+        "Hotels", "Motels", "Hostels", "Backpacker Lodges", "Bed & Breakfast", "Holiday Parks", "Campgrounds", "Holiday Homes", "Serviced Apartments", "Luxury Lodges", "Boutique Accommodation", "Farm Stays", "Cabins & Cottages", "Resorts"
+      ]},
+      { name: "Attractions & Culture", items: [
+        "Attractions & Things to Do", "Museums", "Art Galleries", "Historic Sites", "Heritage Buildings", "Cultural Centres", "Marae & Māori Cultural Experiences", "Libraries", "Visitor Centres", "Zoos", "Aquariums", "Botanical Gardens", "Observation Points", "Landmarks", "Public Art", "Markets", "Festivals & Event Venues", "Convention Centres"
+      ]},
+      { name: "Nature & Outdoors", items: [
+        "Parks", "Regional Parks", "National Parks", "Hiking & Walking Trails", "Mountain Biking Trails", "Cycleways", "Beaches", "Lakes", "Rivers", "Waterfalls", "Lookouts & Viewpoints", "Picnic Areas", "Scenic Reserves", "Wildlife Reserves", "Gardens", "Playgrounds", "Dog Parks", "Camping Areas", "Fishing Spots", "Surf Spots", "Ski Fields", "Hot Pools & Springs"
+      ]},
+      { name: "Entertainment & Nightlife", items: [
+        "Cinemas", "Theatres", "Live Music Venues", "Nightclubs", "Comedy Clubs", "Arcades", "Bowling", "Escape Rooms", "Karaoke", "Casinos", "Family Entertainment Centres", "Indoor Play Centres", "Event Venues", "Performing Arts", "Gaming Lounges"
+      ]},
+      { name: "Sport & Recreation", items: [
+        "Gyms & Fitness Centres", "Swimming Pools", "Sports Centres", "Stadiums", "Golf Courses", "Tennis Courts", "Squash Courts", "Climbing Gyms", "Skate Parks", "Trampoline Parks", "Yoga Studios", "Pilates Studios", "Dance Studios", "Martial Arts", "Sports Clubs", "Kayaking & Paddleboarding", "Surf Schools", "Ski & Snowboard", "Adventure Activities", "Boat Charters"
+      ]},
+      { name: "Health & Wellness", items: [
+        "Hospitals", "Medical Centres", "Doctors & GPs", "Urgent Care", "Pharmacies", "Dentists", "Orthodontists", "Optometrists", "Physiotherapists", "Chiropractors", "Podiatrists", "Psychologists & Counsellors", "Mental Health Services", "Massage", "Day Spas", "Beauty Salons", "Hairdressers & Barbers", "Nail Salons", "Skin Clinics", "Nutritionists", "Audiologists", "Medical Laboratories", "Radiology & Imaging"
+      ]},
+      { name: "Home & Trade Services", items: [
+        "Builders", "Electricians", "Plumbers", "Painters", "Roofers", "Carpenters", "Glaziers", "Locksmiths", "Cleaners", "Carpet Cleaning", "Pest Control", "Landscapers", "Gardeners", "Lawn Care", "Moving Companies", "Storage", "Handyman Services", "Appliance Repair", "Air Conditioning & Heating", "Security Services", "Waste & Rubbish Removal", "Property Maintenance"
+      ]},
+      { name: "Professional Services", items: [
+        "Accountants", "Lawyers", "Financial Advisers", "Banks", "Insurance", "Mortgage Brokers", "Real Estate Agents", "Property Managers", "Architects", "Engineers", "Surveyors", "Marketing Agencies", "Web & Software Developers", "IT Services", "Graphic Designers", "Photographers", "Recruitment Agencies", "Business Consultants", "Coworking Spaces", "Printing Services", "Translators", "Notaries & JP Services"
+      ]},
+      { name: "Automotive & Transport", items: [
+        "Petrol Stations", "EV Charging Stations", "Car Dealers", "Used Car Dealers", "Mechanics", "Tyre Shops", "Warrant of Fitness", "Auto Electricians", "Panel Beaters", "Car Wash", "Car Detailing", "Car Rental", "Campervan Rental", "Motorcycle Shops", "Bicycle Hire", "Taxi & Rideshare", "Bus Stops & Stations", "Train Stations", "Ferry Terminals", "Airports", "Parking", "Towing Services"
+      ]},
+      { name: "Education & Learning", items: [
+        "Universities", "Polytechnics & Institutes", "Schools", "Primary Schools", "Secondary Schools", "Early Childhood Education", "Kindergartens", "Daycare", "Tutoring", "Language Schools", "Driving Schools", "Music Schools", "Dance Schools", "Training Providers", "Libraries", "Community Education"
+      ]},
+      { name: "Community & Government", items: [
+        "City & District Councils", "Government Offices", "Police Stations", "Fire Stations", "Courthouses", "Post Offices", "Community Centres", "Citizens Advice", "Social Services", "Charities", "Food Banks", "Public Toilets", "Recycling Centres", "Cemeteries", "Civil Defence Facilities"
+      ]},
+      { name: "Family & Kids", items: [
+        "Playgrounds", "Indoor Play Centres", "Kids Activities", "Toy Libraries", "Playgroups", "Baby Classes", "Swimming Lessons", "Family Restaurants", "Childcare", "School Holiday Activities", "Birthday Party Venues", "Parenting Services"
+      ]},
+      { name: "Pets & Animals", items: [
+        "Veterinarians", "Emergency Vets", "Pet Stores", "Pet Groomers", "Dog Daycare", "Kennels", "Catteries", "Dog Trainers", "Pet Sitters", "Animal Shelters", "Dog Parks", "Equestrian Centres"
+      ]},
+      { name: "Faith & Spirituality", items: [
+        "Churches", "Mosques", "Temples", "Gurdwaras", "Synagogues", "Buddhist Centres", "Meditation Centres", "Spiritual Centres", "Chapels"
+      ]},
+      { name: "Travel & Visitor Services", items: [
+        "Tour Operators", "Sightseeing Tours", "Travel Agencies", "Visitor Information Centres", "Scenic Flights", "Boat Tours", "Cruises", "Adventure Tours", "Airport Shuttles", "Luggage Storage", "Currency Exchange", "Souvenir Shops"
+      ]},
+      { name: "Business & Industrial", items: [
+        "Manufacturers", "Wholesalers", "Warehouses", "Industrial Suppliers", "Construction Companies", "Logistics & Freight", "Courier Services", "Commercial Cleaning", "Equipment Hire", "Tool Hire", "Agricultural Services", "Farms & Orchards", "Engineering Workshops", "Signwriters"
+      ]}
+    ];
+
+    const cityGroups = [
+      { name: "Auckland & Northland", items: ["Auckland", "Manukau", "North Shore", "Waitākere", "Pukekohe", "Warkworth", "Wellsford", "Whangārei", "Kerikeri", "Paihia", "Kaikohe", "Dargaville", "Kaitaia"] },
+      { name: "Waikato & Bay of Plenty", items: ["Hamilton", "Cambridge", "Te Awamutu", "Huntly", "Morrinsville", "Matamata", "Tokoroa", "Taupō", "Tauranga", "Mount Maunganui", "Te Puke", "Rotorua", "Whakatāne", "Ōpōtiki"] },
+      { name: "Gisborne, Hawke's Bay & Taranaki", items: ["Gisborne", "Napier", "Hastings", "Havelock North", "Waipukurau", "New Plymouth", "Hāwera", "Stratford"] },
+      { name: "Manawatū, Whanganui & Wairarapa", items: ["Palmerston North", "Feilding", "Levin", "Whanganui", "Masterton", "Carterton", "Greytown", "Martinborough"] },
+      { name: "Wellington Region", items: ["Wellington", "Lower Hutt", "Upper Hutt", "Porirua", "Paraparaumu", "Waikanae"] },
+      { name: "Nelson, Tasman & Marlborough", items: ["Nelson", "Richmond", "Motueka", "Tākaka", "Blenheim", "Picton"] },
+      { name: "Canterbury & West Coast", items: ["Christchurch", "Rangiora", "Kaiapoi", "Rolleston", "Lincoln", "Ashburton", "Timaru", "Temuka", "Geraldine", "Greymouth", "Hokitika", "Westport"] },
+      { name: "Otago & Southland", items: ["Dunedin", "Oamaru", "Queenstown", "Wānaka", "Alexandra", "Cromwell", "Balclutha", "Invercargill", "Gore", "Te Anau"] }
+    ];
+
+    const searchShell = document.getElementById("searchShell");
+    const searchInput = document.getElementById("searchInput");
+    const micButton = document.getElementById("micButton");
+    const clearSearchButton = document.getElementById("clearSearchButton");
+    const searchStatus = document.getElementById("searchStatus");
+
+    const categoryButton = document.getElementById("categoryButton");
+    const categoryPanel = document.getElementById("categoryPanel");
+    const categoryLabel = document.getElementById("categoryLabel");
+    const categorySearch = document.getElementById("categorySearch");
+    const categoryGrid = document.getElementById("categoryGrid");
+    const categoryEmpty = document.getElementById("categoryEmpty");
+    const categoryCount = document.getElementById("categoryCount");
+
+    const cityButton = document.getElementById("cityButton");
+    const cityPanel = document.getElementById("cityPanel");
+    const cityLabel = document.getElementById("cityLabel");
+    const citySearch = document.getElementById("citySearch");
+    const cityList = document.getElementById("cityList");
+    const cityEmpty = document.getElementById("cityEmpty");
+    const cityCount = document.getElementById("cityCount");
+
+    let selectedCategory = "All categories";
+    let selectedCity = "All New Zealand";
+    let searchAnimationTimer;
+
+    const checkIcon = `
+      <svg class="selected-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m5 12 4 4L19 6"></path>
+      </svg>`;
+
+    function normalise(value) {
+      return value.toLocaleLowerCase("en-NZ").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function renderCategories(filter = "") {
+      const term = normalise(filter.trim());
+      categoryGrid.innerHTML = "";
+      let visibleItems = 0;
+
+      categoryGroups.forEach((group) => {
+        const matchingItems = group.items.filter((item) => !term || normalise(item).includes(term) || normalise(group.name).includes(term));
+        if (!matchingItems.length) return;
+
+        visibleItems += matchingItems.length;
+        const section = document.createElement("section");
+        section.className = "category-group";
+        section.innerHTML = `<h3 class="group-title"><span class="group-dot"></span>${escapeHtml(group.name)}</h3>`;
+
+        matchingItems.forEach((item) => {
+          const option = document.createElement("button");
+          option.type = "button";
+          option.className = "picker-option" + (item === selectedCategory ? " is-selected" : "");
+          option.dataset.category = item;
+          option.innerHTML = `<span>${escapeHtml(item)}</span>${checkIcon}`;
+          section.appendChild(option);
+        });
+
+        categoryGrid.appendChild(section);
+      });
+
+      categoryEmpty.classList.toggle("is-visible", visibleItems === 0);
+      const total = categoryGroups.reduce((count, group) => count + group.items.length, 0);
+      categoryCount.textContent = filter ? `${visibleItems} matches` : `${total} categories`;
+    }
+
+    function renderCities(filter = "") {
+      const term = normalise(filter.trim());
+      cityList.innerHTML = "";
+      let visibleItems = 0;
+
+      cityGroups.forEach((group) => {
+        const matchingItems = group.items.filter((item) => !term || normalise(item).includes(term) || normalise(group.name).includes(term));
+        if (!matchingItems.length) return;
+
+        visibleItems += matchingItems.length;
+        const section = document.createElement("section");
+        section.className = "city-group";
+        section.innerHTML = `<h3 class="group-title"><span class="group-dot"></span>${escapeHtml(group.name)}</h3><div class="city-options"></div>`;
+        const options = section.querySelector(".city-options");
+
+        matchingItems.forEach((item) => {
+          const option = document.createElement("button");
+          option.type = "button";
+          option.className = "picker-option" + (item === selectedCity ? " is-selected" : "");
+          option.dataset.city = item;
+          option.innerHTML = `<span>${escapeHtml(item)}</span>${checkIcon}`;
+          options.appendChild(option);
+        });
+
+        cityList.appendChild(section);
+      });
+
+      cityEmpty.classList.toggle("is-visible", visibleItems === 0);
+      const total = cityGroups.reduce((count, group) => count + group.items.length, 0);
+      cityCount.textContent = filter ? `${visibleItems} matches` : `${total} locations`;
+    }
+
+    function openPanel(panelName) {
+      const isCategory = panelName === "category";
+      const panel = isCategory ? categoryPanel : cityPanel;
+      const button = isCategory ? categoryButton : cityButton;
+      const otherPanel = isCategory ? cityPanel : categoryPanel;
+      const otherButton = isCategory ? cityButton : categoryButton;
+      const searchField = isCategory ? categorySearch : citySearch;
+      const isAlreadyOpen = panel.classList.contains("is-open");
+
+      otherPanel.classList.remove("is-open");
+      otherButton.setAttribute("aria-expanded", "false");
+
+      if (isAlreadyOpen) {
+        panel.classList.remove("is-open");
+        button.setAttribute("aria-expanded", "false");
+        return;
+      }
+
+      panel.classList.add("is-open");
+      button.setAttribute("aria-expanded", "true");
+      requestAnimationFrame(() => searchField.focus());
+    }
+
+    function closePickers() {
+      categoryPanel.classList.remove("is-open");
+      cityPanel.classList.remove("is-open");
+      categoryButton.setAttribute("aria-expanded", "false");
+      cityButton.setAttribute("aria-expanded", "false");
+    }
+
+    categoryButton.addEventListener("click", () => openPanel("category"));
+    cityButton.addEventListener("click", () => openPanel("city"));
+
+    categorySearch.addEventListener("input", () => renderCategories(categorySearch.value));
+    citySearch.addEventListener("input", () => renderCities(citySearch.value));
+
+    [categorySearch, citySearch].forEach((field) => {
+      field.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") event.preventDefault();
+        if (event.key === "Escape") {
+          closePickers();
+          searchInput.focus();
+        }
+      });
+    });
+
+    categoryPanel.addEventListener("click", (event) => {
+      const option = event.target.closest("[data-category]");
+      if (!option) return;
+      selectedCategory = option.dataset.category;
+      categoryLabel.textContent = selectedCategory === "All categories" ? "Explore" : selectedCategory;
+      categorySearch.value = "";
+      renderCategories();
+      closePickers();
+      updateClearSearchButton();
+      searchInput.focus();
+    });
+
+    cityPanel.addEventListener("click", (event) => {
+      const option = event.target.closest("[data-city]");
+      if (!option) return;
+      selectedCity = option.dataset.city;
+      cityLabel.textContent = selectedCity === "All New Zealand" ? "New Zealand" : selectedCity;
+      citySearch.value = "";
+      renderCities();
+      closePickers();
+      updateClearSearchButton();
+      searchInput.focus();
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!searchShell.contains(event.target)) closePickers();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closePickers();
+    });
+
+
+
+    // Demo search-result data. Replace this array with Google Places / backend results.
+    const demoListings = [
+      {
+        id: 1,
+        name: "North & Grain Coffee Lab",
+        category: "Cafe · Specialty coffee",
+        rating: 4.9,
+        reviews: 684,
+        open: true,
+        closing: "Closes 4:30 pm",
+        distance: 0.6,
+        price: "$$",
+        address: "18 Market Lane",
+        phone: "+64 3 555 0182",
+        website: "northandgrain.demo",
+        description: "Small-batch coffee, fresh cabinet food and a bright modern room built for an easy city stop.",
+        image: "https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=900&q=82"
+      },
+      {
+        id: 2,
+        name: "Juniper Table",
+        category: "Restaurant · Modern New Zealand",
+        rating: 4.8,
+        reviews: 1287,
+        open: true,
+        closing: "Closes 10:00 pm",
+        distance: 1.1,
+        price: "$$$",
+        address: "42 Harbour Street",
+        phone: "+64 3 555 0237",
+        website: "junipertable.demo",
+        description: "Seasonal local produce, polished service and relaxed dining with a distinctly Aotearoa-focused menu.",
+        image: "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=900&q=82"
+      },
+      {
+        id: 3,
+        name: "Atlas City Museum",
+        category: "Museum · Arts & culture",
+        rating: 4.7,
+        reviews: 2394,
+        open: true,
+        closing: "Closes 5:00 pm",
+        distance: 1.8,
+        price: "$",
+        address: "7 Civic Square",
+        phone: "+64 3 555 0311",
+        website: "atlascitymuseum.demo",
+        description: "Interactive local-history galleries, rotating exhibitions and family-friendly discovery spaces.",
+        image: "https://images.unsplash.com/photo-1564399579883-451a5d44ec08?auto=format&fit=crop&w=900&q=82"
+      },
+      {
+        id: 4,
+        name: "Summit Loop Trail",
+        category: "Hiking trail · Outdoors",
+        rating: 4.9,
+        reviews: 917,
+        open: true,
+        closing: "Open 24 hours",
+        distance: 4.7,
+        price: "$",
+        address: "Summit Reserve Entrance",
+        phone: "",
+        website: "summitloop.demo",
+        description: "A scenic loop with wide viewpoints, native planting and clearly marked sections for varied fitness levels.",
+        image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=82"
+      },
+      {
+        id: 5,
+        name: "Paper & Pine Books",
+        category: "Bookshop · Independent retail",
+        rating: 4.6,
+        reviews: 341,
+        open: false,
+        closing: "Opens 9:00 am tomorrow",
+        distance: 2.4,
+        price: "$$",
+        address: "66 Garden Road",
+        phone: "+64 3 555 0440",
+        website: "paperandpine.demo",
+        description: "Independent books, thoughtful gifts and a quiet reading corner with a carefully curated local section.",
+        image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=900&q=82"
+      },
+      {
+        id: 6,
+        name: "Harbour House Bakery",
+        category: "Bakery · Breakfast",
+        rating: 4.8,
+        reviews: 764,
+        open: true,
+        closing: "Closes 3:30 pm",
+        distance: 3.2,
+        price: "$$",
+        address: "5 Willow Arcade",
+        phone: "+64 3 555 0498",
+        website: "harbourhouse.demo",
+        description: "Naturally leavened bread, laminated pastries and all-day breakfast favourites served in a light-filled space.",
+        image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=82"
+      },
+      {
+        id: 7,
+        name: "Tidal Wellness Studio",
+        category: "Wellness · Yoga & Pilates",
+        rating: 4.5,
+        reviews: 198,
+        open: false,
+        closing: "Opens 6:00 am tomorrow",
+        distance: 5.8,
+        price: "$$$",
+        address: "101 Fern Avenue",
+        phone: "+64 3 555 0526",
+        website: "",
+        description: "Small-group movement classes, recovery sessions and modern wellness facilities in a calm studio setting.",
+        image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=900&q=82"
+      },
+      {
+        id: 8,
+        name: "Laneway Kitchen",
+        category: "Restaurant · Asian fusion",
+        rating: 4.4,
+        reviews: 1108,
+        open: true,
+        closing: "Closes 9:30 pm",
+        distance: 0.9,
+        price: "$$",
+        address: "29 Lantern Lane",
+        phone: "+64 3 555 0671",
+        website: "lanewaykitchen.demo",
+        description: "A fast-moving neighbourhood kitchen with share plates, bold flavours and a casual open-kitchen atmosphere.",
+        image: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=900&q=82"
+      },
+      {
+        id: 9,
+        name: "Koru Design Market",
+        category: "Market · Local makers",
+        rating: 4.7,
+        reviews: 526,
+        open: true,
+        closing: "Closes 5:00 pm",
+        distance: 6.4,
+        price: "$$",
+        address: "12 Foundry Court",
+        phone: "+64 3 555 0714",
+        website: "korudesignmarket.demo",
+        description: "Local design, small-label fashion, ceramics and rotating pop-ups from independent New Zealand makers.",
+        image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=82"
+      }
+    ];
+
+    const resultsSection = document.getElementById("resultsSection");
+    const resultsGrid = document.getElementById("resultsGrid");
+    const resultsTitle = document.getElementById("resultsTitle");
+    const resultsMeta = document.getElementById("resultsMeta");
+    const noResults = document.getElementById("noResults");
+    const listViewButton = document.getElementById("listViewButton");
+    const gridViewButton = document.getElementById("gridViewButton");
+    const openNowFilter = document.getElementById("openNowFilter");
+    const ratingFilter = document.getElementById("ratingFilter");
+    const distanceFilter = document.getElementById("distanceFilter");
+    const priceFilter = document.getElementById("priceFilter");
+    const websiteFilter = document.getElementById("websiteFilter");
+    const phoneFilter = document.getElementById("phoneFilter");
+    const sortFilter = document.getElementById("sortFilter");
+    const resetFilters = document.getElementById("resetFilters");
+    const detailPage = document.getElementById("detailPage");
+    const detailHero = document.getElementById("detailHero");
+    const similarStrip = document.getElementById("similarStrip");
+    const detailMainColumn = document.getElementById("detailMainColumn");
+    const detailSidebar = document.getElementById("detailSidebar");
+    const backToResults = document.getElementById("backToResults");
+    const detailSave = document.getElementById("detailSave");
+    let activeDetailListingId = null;
+
+    const resultFilterState = {
+      openNow: false,
+      rating: 0,
+      distance: 999,
+      price: "all",
+      website: false,
+      phone: false,
+      sort: "recommended",
+      view: "list"
+    };
+
+    function getDemoCity() {
+      return selectedCity === "All New Zealand" ? "Christchurch" : selectedCity;
+    }
+
+    function setToggleFilter(button, key) {
+      resultFilterState[key] = !resultFilterState[key];
+      button.classList.toggle("is-active", resultFilterState[key]);
+      button.setAttribute("aria-pressed", String(resultFilterState[key]));
+      renderResults();
+    }
+
+    function listingMatchesSearch(listing) {
+      const q = normalise(searchInput.value.trim());
+      if (!q) return true;
+      const haystack = normalise(`${listing.name} ${listing.category} ${listing.description}`);
+      const words = q.split(/\s+/).filter(Boolean);
+      return words.some((word) => haystack.includes(word));
+    }
+
+    function filteredDemoListings() {
+      let items = demoListings.filter((listing) => {
+        if (resultFilterState.openNow && !listing.open) return false;
+        if (listing.rating < Number(resultFilterState.rating)) return false;
+        if (listing.distance > Number(resultFilterState.distance)) return false;
+        if (resultFilterState.price !== "all" && listing.price !== resultFilterState.price) return false;
+        if (resultFilterState.website && !listing.website) return false;
+        if (resultFilterState.phone && !listing.phone) return false;
+        return true;
+      });
+
+      if (resultFilterState.sort === "rating") items.sort((a,b) => b.rating - a.rating);
+      if (resultFilterState.sort === "reviews") items.sort((a,b) => b.reviews - a.reviews);
+      if (resultFilterState.sort === "distance") items.sort((a,b) => a.distance - b.distance);
+      if (resultFilterState.sort === "name") items.sort((a,b) => a.name.localeCompare(b.name));
+      return items;
+    }
+
+    function resultCardTemplate(listing) {
+      const city = getDemoCity();
+      const statusClass = listing.open ? "open-text" : "closed-text";
+      const badgeClass = listing.open ? "" : " is-closed";
+      const websiteLine = listing.website ? `
+        <div class="micro-line">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M4 12h16M12 4c2.2 2.3 3.3 5 3.3 8S14.2 17.7 12 20M12 4C9.8 6.3 8.7 9 8.7 12S9.8 17.7 12 20"></path></svg>
+          <span>${escapeHtml(listing.website)}</span>
+        </div>` : "";
+      const phoneLine = listing.phone ? `
+        <div class="micro-line">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 5 6c-1 1 0 5 4 9s8 5 9 4l2-2-4-3-2 2c-1-1-3-2-4-3s-2-3-3-4l2-2-2-3Z"></path></svg>
+          <span>${escapeHtml(listing.phone)}</span>
+        </div>` : "";
+
+      return `
+        <article class="result-card" data-id="${listing.id}">
+          <figure class="result-photo">
+            <img src="${listing.image}" alt="Demo photo for ${escapeHtml(listing.name)}" loading="lazy" referrerpolicy="no-referrer" />
+            <div class="photo-overlay"></div>
+            <div class="photo-badges">
+              <span class="mini-badge${badgeClass}"><span class="status-dot"></span>${listing.open ? "Open" : "Closed"}</span>
+              <span class="mini-badge">${listing.price}</span>
+            </div>
+            <button class="save-place" type="button" aria-label="Save ${escapeHtml(listing.name)}" title="Save place">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"></path></svg>
+            </button>
+          </figure>
+
+          <div class="result-main">
+            <div class="result-topline">
+              <h3 class="result-name">${escapeHtml(listing.name)}</h3>
+              <div class="result-rating" title="${listing.rating} out of 5">
+                <span class="star">★</span>
+                ${listing.rating.toFixed(1)} <span class="rating-count">(${listing.reviews.toLocaleString("en-NZ")})</span>
+              </div>
+            </div>
+
+            <div class="result-subline">
+              <span>${escapeHtml(listing.category)}</span><span class="dot-sep"></span>
+              <span class="${statusClass}">${escapeHtml(listing.closing)}</span><span class="dot-sep"></span>
+              <span>${listing.distance.toFixed(1)} km</span>
+            </div>
+
+            <p class="result-desc">${escapeHtml(listing.description)}</p>
+
+            <div class="micro-details">
+              <div class="micro-line">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                <span>${escapeHtml(listing.address)}, ${escapeHtml(city)}, New Zealand</span>
+              </div>
+              ${phoneLine}
+              ${websiteLine}
+            </div>
+          </div>
+
+          <div class="result-side">
+            <button class="card-action primary" type="button" data-demo-detail="${listing.id}">
+              View details
+            </button>
+            <button class="card-action" type="button" title="Directions demo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 8 8-8 8-8-8 8-8Z"></path><path d="M9 11h6M13 9l2 2-2 2"></path></svg>
+              Directions
+            </button>
+          </div>
+        </article>`;
+    }
+
+    function renderResults() {
+      if (!resultsSection || resultsSection.hidden) return;
+      const items = filteredDemoListings();
+      resultsGrid.innerHTML = items.map(resultCardTemplate).join("");
+      noResults.classList.toggle("is-visible", items.length === 0);
+      resultsGrid.style.display = items.length ? "grid" : "none";
+
+      const city = getDemoCity();
+      const descriptor = selectedCategory !== "All categories" ? selectedCategory : (searchInput.value.trim() || "places");
+      resultsTitle.textContent = `${descriptor} in ${city}`;
+      resultsMeta.textContent = `${items.length} demo match${items.length === 1 ? "" : "es"} · refined from ${demoListings.length} sample listings`;
+    }
+
+    function revealResults() {
+      document.body.classList.add("has-results");
+      resultsSection.hidden = false;
+      updateClearSearchButton();
+      requestAnimationFrame(() => {
+        resultsSection.classList.add("is-visible");
+        renderResults();
+        setTimeout(() => resultsSection.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+      });
+    }
+
+    function setResultsView(view) {
+      resultFilterState.view = view;
+      resultsGrid.dataset.view = view;
+      const listActive = view === "list";
+      listViewButton.classList.toggle("is-active", listActive);
+      gridViewButton.classList.toggle("is-active", !listActive);
+      listViewButton.setAttribute("aria-pressed", String(listActive));
+      gridViewButton.setAttribute("aria-pressed", String(!listActive));
+    }
+
+    listViewButton.addEventListener("click", () => setResultsView("list"));
+    gridViewButton.addEventListener("click", () => setResultsView("grid"));
+    openNowFilter.addEventListener("click", () => setToggleFilter(openNowFilter, "openNow"));
+    websiteFilter.addEventListener("click", () => setToggleFilter(websiteFilter, "website"));
+    phoneFilter.addEventListener("click", () => setToggleFilter(phoneFilter, "phone"));
+
+    ratingFilter.addEventListener("change", () => { resultFilterState.rating = Number(ratingFilter.value); renderResults(); });
+    distanceFilter.addEventListener("change", () => { resultFilterState.distance = Number(distanceFilter.value); renderResults(); });
+    priceFilter.addEventListener("change", () => { resultFilterState.price = priceFilter.value; renderResults(); });
+    sortFilter.addEventListener("change", () => { resultFilterState.sort = sortFilter.value; renderResults(); });
+
+    resetFilters.addEventListener("click", () => {
+      Object.assign(resultFilterState, { openNow:false, rating:0, distance:999, price:"all", website:false, phone:false, sort:"recommended" });
+      openNowFilter.classList.remove("is-active");
+      websiteFilter.classList.remove("is-active");
+      phoneFilter.classList.remove("is-active");
+      [openNowFilter, websiteFilter, phoneFilter].forEach((button) => button.setAttribute("aria-pressed", "false"));
+      ratingFilter.value = "0";
+      distanceFilter.value = "999";
+      priceFilter.value = "all";
+      sortFilter.value = "recommended";
+      renderResults();
+    });
+
+
+    function detailTagsFor(listing) {
+      const categoryTags = listing.category.split("·").map((item) => item.trim()).filter(Boolean);
+      const generic = listing.open
+        ? ["Open now", "Highly rated", "Local favourite", "New Zealand"]
+        : ["Popular", "Local favourite", "New Zealand"];
+      if (listing.rating >= 4.7) generic.splice(1, 0, "4.7+ rating");
+      if (listing.distance <= 2) generic.push("Nearby");
+      return [...new Set([...categoryTags, ...generic])].slice(0, 8);
+    }
+
+    function detailFeaturesFor(listing) {
+      const cat = normalise(listing.category);
+      const base = [
+        ["Verified contact", "<path d='M5 12l4 4L19 6'></path>"],
+        [listing.website ? "Website available" : "Local listing", "<circle cx='12' cy='12' r='8'></circle><path d='M4 12h16'></path>"],
+        ["Easy directions", "<path d='m12 3 8 8-8 8-8-8 8-8Z'></path><path d='M9 11h6'></path>"]
+      ];
+      if (cat.includes("restaurant") || cat.includes("cafe") || cat.includes("bakery")) {
+        return [...base, ["Dine-in", "<path d='M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M15 3v18M15 3c3 2 3 7 0 9'></path>"], ["Takeaway", "<path d='M6 8h12l-1 13H7L6 8Z'></path><path d='M9 8a3 3 0 0 1 6 0'></path>"], ["Popular nearby", "<path d='M12 21s7-5 7-11a7 7 0 1 0-14 0c0 6 7 11 7 11Z'></path>"]];
+      }
+      if (cat.includes("trail") || cat.includes("park") || cat.includes("outdoor")) {
+        return [...base, ["Outdoor", "<path d='m4 18 5-8 3 5 2-3 6 6H4Z'></path>"], ["Scenic", "<circle cx='12' cy='12' r='4'></circle><path d='M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4'></path>"], ["Good for walking", "<path d='M10 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM9 8l3 2 2 4M9 8l-2 5-3 2M12 10l-1 5 4 5M7 13l3 3-2 5'></path>"]];
+      }
+      return [...base, ["Well reviewed", "<path d='m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z'></path>"], ["Community choice", "<circle cx='8' cy='9' r='3'></circle><circle cx='16' cy='9' r='3'></circle><path d='M3 20c0-4 2-6 5-6M21 20c0-4-2-6-5-6M10 20c0-4 1-7 2-7s2 3 2 7'></path>"], ["Nearby", "<path d='M12 21s7-5 7-11a7 7 0 1 0-14 0c0 6 7 11 7 11Z'></path>"]];
+    }
+
+    function similarListingsFor(listing) {
+      const categoryRoot = normalise(listing.category.split("·")[0].trim());
+      return demoListings
+        .filter((item) => item.id !== listing.id)
+        .sort((a, b) => {
+          const aMatch = normalise(a.category).includes(categoryRoot) ? 1 : 0;
+          const bMatch = normalise(b.category).includes(categoryRoot) ? 1 : 0;
+          if (aMatch !== bMatch) return bMatch - aMatch;
+          const aScore = a.rating - a.distance * .025;
+          const bScore = b.rating - b.distance * .025;
+          return bScore - aScore;
+        })
+        .slice(0, 3);
+    }
+
+    function renderSimilarPlaces(listing) {
+      similarStrip.innerHTML = similarListingsFor(listing).map((item) => `
+        <button class="similar-card" type="button" data-similar-detail="${item.id}">
+          <img src="${item.image}" alt="${escapeHtml(item.name)}" loading="lazy" referrerpolicy="no-referrer" />
+          <span class="similar-card-copy">
+            <span class="similar-card-name">${escapeHtml(item.name)}</span>
+            <span class="similar-card-meta"><span class="similar-card-rating">${item.rating.toFixed(1)}</span><span>${item.distance.toFixed(1)} km</span></span>
+          </span>
+        </button>`).join("");
+    }
+
+    function renderListingDetail(listing) {
+      const city = getDemoCity();
+      const tags = detailTagsFor(listing);
+      const features = detailFeaturesFor(listing);
+      const openClass = listing.open ? "open" : "closed";
+      const secondImage = demoListings[(listing.id + 1) % demoListings.length]?.image || listing.image;
+      const thirdImage = demoListings[(listing.id + 3) % demoListings.length]?.image || listing.image;
+
+      detailHero.innerHTML = `
+        <div class="detail-gallery">
+          <figure class="detail-main-photo">
+            <img src="${listing.image}" alt="${escapeHtml(listing.name)}" referrerpolicy="no-referrer" />
+            <span class="photo-count"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="m21 15-5-5L5 19"></path></svg>12 photos</span>
+          </figure>
+          <div class="detail-thumb-stack">
+            <figure class="detail-thumb"><img src="${secondImage}" alt="Additional view" loading="lazy" referrerpolicy="no-referrer" /></figure>
+            <figure class="detail-thumb"><img src="${thirdImage}" alt="Additional view" loading="lazy" referrerpolicy="no-referrer" /></figure>
+          </div>
+        </div>
+        <div class="detail-summary">
+          <div class="detail-eyebrow">${escapeHtml(listing.category)}</div>
+          <h1>${escapeHtml(listing.name)}</h1>
+          <div class="detail-rating-row">
+            <span class="detail-rating-pill"><span class="star">★</span>${listing.rating.toFixed(1)} <span>(${listing.reviews.toLocaleString("en-NZ")})</span></span>
+            <span class="detail-status ${openClass}">${listing.open ? "Open now" : "Closed"}</span>
+            <span>·</span><span>${listing.price}</span><span>·</span><span>${listing.distance.toFixed(1)} km</span>
+          </div>
+          <p class="detail-summary-copy">${escapeHtml(listing.description)}</p>
+          <div class="detail-quick-facts">
+            <div class="detail-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg><span>${escapeHtml(listing.address)}, ${escapeHtml(city)}, New Zealand</span></div>
+            <div class="detail-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 5 6c-1 1 0 5 4 9s8 5 9 4l2-2-4-3-2 2c-1-1-3-2-4-3s-2-3-3-4l2-2-2-3Z"></path></svg><span>${escapeHtml(listing.phone || "Contact details unavailable")}</span></div>
+            <div class="detail-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><path d="M4 12h16M12 4c2.2 2.3 3.3 5 3.3 8S14.2 17.7 12 20M12 4C9.8 6.3 8.7 9 8.7 12S9.8 17.7 12 20"></path></svg><span>${escapeHtml(listing.website || "Website unavailable")}</span></div>
+          </div>
+        </div>`;
+
+      detailMainColumn.innerHTML = `
+        <section class="detail-section prism-panel">
+          <div class="section-kicker">Overview</div><h2>About this place</h2>
+          <p>${escapeHtml(listing.description)} This demo detail view is structured for richer Google Places or directory data, including business descriptions, amenities, service options, accessibility, opening information and additional listing attributes.</p>
+          <div class="feature-grid">${features.map(([label, icon]) => `<div class="feature-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${icon}</svg><span>${label}</span></div>`).join("")}</div>
+        </section>
+
+        <section class="detail-section prism-panel">
+          <div class="section-kicker">Plan your visit</div><h2>Hours & contact</h2>
+          <div class="info-grid">
+            <div class="info-block"><div class="info-label">Address</div><div class="info-value">${escapeHtml(listing.address)}<br>${escapeHtml(city)}, New Zealand</div></div>
+            <div class="info-block"><div class="info-label">Contact</div><div class="info-value">${escapeHtml(listing.phone || "Not available")}<br>${escapeHtml(listing.website || "Website not available")}</div></div>
+          </div>
+          <div class="hours-list">
+            <div class="hours-row"><span>Monday</span><strong>8:00 am – 5:00 pm</strong></div>
+            <div class="hours-row"><span>Tuesday</span><strong>8:00 am – 5:00 pm</strong></div>
+            <div class="hours-row"><span>Wednesday</span><strong>8:00 am – 5:00 pm</strong></div>
+            <div class="hours-row"><span>Thursday</span><strong>8:00 am – 7:00 pm</strong></div>
+            <div class="hours-row"><span>Friday</span><strong>8:00 am – 7:00 pm</strong></div>
+            <div class="hours-row"><span>Saturday</span><strong>9:00 am – 5:00 pm</strong></div>
+            <div class="hours-row"><span>Sunday</span><strong>9:00 am – 4:00 pm</strong></div>
+          </div>
+        </section>
+
+        <section class="detail-section prism-panel">
+          <div class="section-kicker">Reputation</div><h2>Rating overview</h2>
+          <div class="info-grid">
+            <div class="info-block"><div class="info-label">Google-style rating</div><div class="info-value"><strong>${listing.rating.toFixed(1)} / 5</strong><br>${listing.reviews.toLocaleString("en-NZ")} reviews</div></div>
+            <div class="info-block"><div class="info-label">Prism signal</div><div class="info-value"><strong>${listing.rating >= 4.7 ? "Excellent" : listing.rating >= 4.4 ? "Very good" : "Good"}</strong><br>Strong local discovery match</div></div>
+          </div>
+        </section>`;
+
+      detailSidebar.innerHTML = `
+        <section class="side-panel prism-panel">
+          <div class="section-kicker">Tags</div><h3>Good to know</h3>
+          <div class="tag-cloud">${tags.map((tag) => `<span class="detail-tag">${escapeHtml(tag)}</span>`).join("")}</div>
+        </section>
+        <section class="side-panel prism-panel">
+          <div class="section-kicker">Related</div><h3>Explore more</h3>
+          <div class="side-related-list">
+            <div class="side-related-item"><span>${escapeHtml(listing.category.split("·")[0].trim())}</span><span>›</span></div>
+            <div class="side-related-item"><span>Nearby places</span><span>›</span></div>
+            <div class="side-related-item"><span>Top rated in ${escapeHtml(city)}</span><span>›</span></div>
+            <div class="side-related-item"><span>Open now</span><span>›</span></div>
+          </div>
+        </section>
+        <section class="side-panel prism-panel detail-actions-panel">
+          <button class="detail-action-wide primary" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 8-8 8-8-8 8-8Z"></path><path d="M9 11h6M13 9l2 2-2 2"></path></svg>Get directions</button>
+          <button class="detail-action-wide" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 5 6c-1 1 0 5 4 9s8 5 9 4l2-2-4-3-2 2c-1-1-3-2-4-3s-2-3-3-4l2-2-2-3Z"></path></svg>Call ${escapeHtml(listing.phone || "place")}</button>
+        </section>`;
+
+      renderSimilarPlaces(listing);
+    }
+
+    function openListingDetail(listing) {
+      activeDetailListingId = listing.id;
+      renderListingDetail(listing);
+      resultsSection.classList.remove("is-visible");
+      resultsSection.hidden = true;
+      detailPage.hidden = false;
+      document.body.classList.add("has-results", "has-detail");
+      requestAnimationFrame(() => {
+        detailPage.classList.add("is-visible");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      searchStatus.innerHTML = `Viewing <strong>${escapeHtml(listing.name)}</strong>`;
+    }
+
+    function closeListingDetail() {
+      activeDetailListingId = null;
+      detailPage.classList.remove("is-visible");
+      detailPage.hidden = true;
+      document.body.classList.remove("has-detail");
+      resultsSection.hidden = false;
+      requestAnimationFrame(() => resultsSection.classList.add("is-visible"));
+      renderResults();
+      setTimeout(() => resultsSection.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+    }
+
+    backToResults.addEventListener("click", closeListingDetail);
+    similarStrip.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-similar-detail]");
+      if (!button) return;
+      const listing = demoListings.find((item) => item.id === Number(button.dataset.similarDetail));
+      if (listing) openListingDetail(listing);
+    });
+    detailSave.addEventListener("click", () => detailSave.classList.toggle("is-saved"));
+
+    resultsGrid.addEventListener("click", (event) => {
+      const saveButton = event.target.closest(".save-place");
+      if (saveButton) {
+        saveButton.classList.toggle("is-saved");
+        return;
+      }
+
+      const detailButton = event.target.closest("[data-demo-detail]");
+      if (detailButton) {
+        const listing = demoListings.find((item) => item.id === Number(detailButton.dataset.demoDetail));
+        if (listing) openListingDetail(listing);
+      }
+    });
+
+
+    function updateClearSearchButton() {
+      const hasCriteria = Boolean(searchInput.value.trim()) ||
+        selectedCategory !== "All categories" ||
+        selectedCity !== "All New Zealand" ||
+        !resultsSection.hidden;
+      clearSearchButton.hidden = !hasCriteria;
+    }
+
+    function clearSearchExperience() {
+      closePickers();
+      searchInput.value = "";
+      selectedCategory = "All categories";
+      selectedCity = "All New Zealand";
+      categoryLabel.textContent = "Explore";
+      cityLabel.textContent = "New Zealand";
+      categorySearch.value = "";
+      citySearch.value = "";
+      renderCategories();
+      renderCities();
+
+      resetFilters.click();
+      activeDetailListingId = null;
+      detailPage.classList.remove("is-visible");
+      detailPage.hidden = true;
+      document.body.classList.remove("has-detail");
+      resultsSection.classList.remove("is-visible");
+      resultsSection.hidden = true;
+      document.body.classList.remove("has-results");
+      searchStatus.textContent = "";
+      updateClearSearchButton();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      searchInput.focus({ preventScroll: true });
+    }
+
+    clearSearchButton.addEventListener("click", clearSearchExperience);
+    searchInput.addEventListener("input", updateClearSearchButton);
+
+    function runSearchAnimation() {
+      searchShell.classList.add("is-searching");
+      clearTimeout(searchAnimationTimer);
+      searchAnimationTimer = setTimeout(() => searchShell.classList.remove("is-searching"), 1800);
+    }
+
+    function buildSearchSummary(query) {
+      const parts = [];
+      if (query) parts.push(`“${query}”`);
+      if (selectedCategory !== "All categories") parts.push(selectedCategory);
+      if (selectedCity !== "All New Zealand") parts.push(`in ${selectedCity}`);
+      return parts.join(" · ") || "all places across New Zealand";
+    }
+
+    function performSearch(query) {
+      const cleanedQuery = query.trim();
+      const hasCategory = selectedCategory !== "All categories";
+      const hasCity = selectedCity !== "All New Zealand";
+
+      if (!cleanedQuery && !hasCategory && !hasCity) {
+        searchInput.focus();
+        searchStatus.textContent = "Type a keyword, choose a category, or select a New Zealand city.";
+        return;
+      }
+
+      closePickers();
+      updateClearSearchButton();
+      runSearchAnimation();
+      const summary = buildSearchSummary(cleanedQuery);
+      searchStatus.innerHTML = `Searching Prism for <strong>${escapeHtml(summary)}</strong>…`;
+
+      /*
+        Connect this object to Google Places / your backend search endpoint.
+        const criteria = {
+          query: cleanedQuery,
+          category: selectedCategory,
+          city: selectedCity
+        };
+      */
+      setTimeout(() => {
+        searchStatus.innerHTML = `Showing demo results for <strong>${escapeHtml(summary)}</strong>.`;
+        revealResults();
+      }, 620);
+    }
+
+    searchShell.addEventListener("submit", (event) => {
+      event.preventDefault();
+      performSearch(searchInput.value);
+    });
+
+    document.querySelectorAll(".quick-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        const category = chip.dataset.category;
+        if (category) {
+          selectedCategory = category;
+          categoryLabel.textContent = category;
+          renderCategories();
+        }
+        searchInput.value = chip.dataset.query || chip.textContent.trim();
+        updateClearSearchButton();
+        searchInput.focus();
+        performSearch(searchInput.value);
+      });
+    });
+
+    function escapeHtml(value) {
+      const element = document.createElement("div");
+      element.textContent = value;
+      return element.innerHTML;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.lang = "en-NZ";
+
+      micButton.addEventListener("click", () => {
+        closePickers();
+        try { recognition.start(); } catch { /* Ignore duplicate starts. */ }
+      });
+
+      recognition.addEventListener("start", () => {
+        micButton.classList.add("is-listening");
+        searchStatus.textContent = "Listening…";
+      });
+
+      recognition.addEventListener("result", (event) => {
+        let transcript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) transcript += event.results[i][0].transcript;
+        searchInput.value = transcript;
+        const lastResult = event.results[event.results.length - 1];
+        if (lastResult.isFinal) performSearch(searchInput.value);
+      });
+
+      recognition.addEventListener("end", () => micButton.classList.remove("is-listening"));
+      recognition.addEventListener("error", (event) => {
+        micButton.classList.remove("is-listening");
+        searchStatus.textContent = event.error === "not-allowed"
+          ? "Microphone permission is required for voice search."
+          : "Voice input could not be started.";
+      });
+    } else {
+      micButton.disabled = true;
+      micButton.title = "Voice search is not supported in this browser";
+      micButton.style.opacity = "0.45";
+      micButton.style.cursor = "not-allowed";
+    }
+
+    renderCategories();
+    renderCities();
+  </script>
+</body>
+</html>

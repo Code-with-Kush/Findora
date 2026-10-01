@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7f8fb" />
+  <title>Prism Directory — Discover New Zealand</title>
+
+    <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-rail">
+      <a class="brand-portal" href="#" aria-label="Prism Directory home">
+        <span class="prism-mark" aria-hidden="true">
+          <span class="prism-lens"></span>
+          <span class="prism-spark"></span>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-name">Prism</span>
+          <span class="brand-type">directory</span>
+        </span>
+      </a>
+
+      <form class="search-shell" id="searchShell" autocomplete="off">
+        <div class="search-box">
+          <button class="picker-button category-button" id="categoryButton" type="button" aria-expanded="false" aria-controls="categoryPanel" aria-label="Choose category">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 7h16"></path><path d="M7 12h10"></path><path d="M10 17h4"></path>
+            </svg>
+            <span class="picker-label" id="categoryLabel">Explore</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 10 4 4 4-4"></path></svg>
+          </button>
+
+          <span class="search-divider" aria-hidden="true"></span>
+
+          <button class="picker-button city-button" id="cityButton" type="button" aria-expanded="false" aria-controls="cityPanel" aria-label="Choose New Zealand city">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle>
+            </svg>
+            <span class="picker-label" id="cityLabel">New Zealand</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 10 4 4 4-4"></path></svg>
+          </button>
+
+          <span class="search-divider" aria-hidden="true"></span>
+
+          <input
+            id="searchInput"
+            class="search-input"
+            type="search"
+            name="search"
+            placeholder="Search business, place or keyword..."
+            aria-label="Search Prism Directory"
+          />
+
+          <button class="icon-button clear-search-button" id="clearSearchButton" type="button" aria-label="Clear search" title="Clear search" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 7l10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+
+          <button class="icon-button mic-button" id="micButton" type="button" aria-label="Search by voice" title="Search by voice">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="2.5" width="6" height="12" rx="3"></rect>
+              <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0"></path>
+              <path d="M12 18v3.5"></path>
+              <path d="M8.5 21.5h7"></path>
+            </svg>
+          </button>
+
+          <button class="icon-button search-button" type="submit" aria-label="Search" title="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5"></circle>
+              <path d="m16 16 4.5 4.5"></path>
+            </svg>
+          </button>
+        </div>
+
+        <section class="picker-panel category-panel" id="categoryPanel" aria-label="Explore categories">
+          <div class="picker-head">
+            <label class="picker-search-wrap" for="categorySearch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
+              <input class="picker-search" id="categorySearch" type="text" placeholder="Search categories — cafe, museum, hiking trail..." />
+            </label>
+          </div>
+          <div class="picker-body" id="categoryBody">
+            <button class="all-option" type="button" data-category="All categories">
+              <span class="all-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v8M8 12h8"></path></svg>
+              </span>
+              <span>Explore all categories</span>
+            </button>
+            <div class="category-grid" id="categoryGrid"></div>
+            <div class="empty-state" id="categoryEmpty">No matching category. Try a broader term.</div>
+          </div>
+          <div class="picker-foot"><span>New Zealand-focused directory taxonomy</span><strong id="categoryCount"></strong></div>
+        </section>
+
+        <section class="picker-panel city-panel" id="cityPanel" aria-label="Choose New Zealand city or town">
+          <div class="picker-head">
+            <label class="picker-search-wrap" for="citySearch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
+              <input class="picker-search" id="citySearch" type="text" placeholder="Search city or town..." />
+            </label>
+          </div>
+          <div class="picker-body" id="cityBody">
+            <button class="all-option" type="button" data-city="All New Zealand">
+              <span class="all-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z"></path><path d="M3 12h18M12 3c2.2 2.4 3.3 5.4 3.3 9S14.2 18.6 12 21M12 3C9.8 5.4 8.7 8.4 8.7 12S9.8 18.6 12 21"></path></svg>
+              </span>
+              <span>All New Zealand</span>
+            </button>
+            <div class="city-list" id="cityList"></div>
+            <div class="empty-state" id="cityEmpty">No matching New Zealand location.</div>
+          </div>
+          <div class="picker-foot"><span>Major cities, regional centres and towns</span><strong id="cityCount"></strong></div>
+        </section>
+      </form>
+    </div>
+
+    <div class="search-status" id="searchStatus" aria-live="polite"></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="ambient-orbit" aria-hidden="true"></div>
+
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        Discover Aotearoa, one place at a time.
+      </div>
+
+      <h1>Find the right <span class="spectrum-word">place.</span></h1>
+      <p>
+        Choose a category, pick a New Zealand city, or search by business name and keyword — all through one clean discovery experience.
+      </p>
+
+      <div class="quick-searches" aria-label="Popular searches">
+        <button class="quick-chip" type="button" data-query="Coffee" data-category="Cafes & Coffee Shops">Coffee</button>
+        <button class="quick-chip" type="button" data-query="Indian food" data-category="Indian Restaurants">Indian food</button>
+        <button class="quick-chip" type="button" data-query="Things to do" data-category="Attractions & Things to Do">Things to do</button>
+        <button class="quick-chip" type="button" data-query="Hiking" data-category="Hiking & Walking Trails">Hiking</button>
+        <button class="quick-chip" type="button" data-query="Museum" data-category="Museums">Museums</button>
+      </div>
+    </section>
+
+    <section class="results-workspace" id="resultsSection" hidden aria-live="polite">
+      <div class="results-head">
+        <div>
+          <div class="results-kicker">Prism discovery</div>
+          <h2 id="resultsTitle">Places worth a closer look</h2>
+          <p id="resultsMeta">Demo results matched to your search.</p>
+        </div>
+
+        <div class="view-switch" role="group" aria-label="Results layout">
+          <button class="view-button is-active" id="listViewButton" type="button" aria-label="List view" title="List view">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"></path><path d="M4 6h.01M4 12h.01M4 18h.01"></path></svg>
+          </button>
+          <button class="view-button" id="gridViewButton" type="button" aria-label="Grid view" title="Grid view">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-dock" aria-label="Advanced result filters">
+        <div class="filter-leading">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>
+          Refine
+        </div>
+
+        <button class="filter-chip" id="openNowFilter" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l3 2"></path></svg>
+          Open now
+        </button>
+
+        <select class="filter-select" id="ratingFilter" aria-label="Minimum rating">
+          <option value="0">Any rating</option>
+          <option value="4">4.0+ rating</option>
+          <option value="4.5">4.5+ rating</option>
+          <option value="4.8">4.8+ rating</option>
+        </select>
+
+        <select class="filter-select" id="distanceFilter" aria-label="Maximum distance">
+          <option value="999">Any distance</option>
+          <option value="1">Within 1 km</option>
+          <option value="3">Within 3 km</option>
+          <option value="5">Within 5 km</option>
+          <option value="10">Within 10 km</option>
+        </select>
+
+        <select class="filter-select" id="priceFilter" aria-label="Price level">
+          <option value="all">Any price</option>
+          <option value="$">$ Budget</option>
+          <option value="$$">$$ Moderate</option>
+          <option value="$$$">$$$ Premium</option>
+        </select>
+
+        <button class="filter-chip" id="websiteFilter" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M4 12h16M12 4c2.2 2.3 3.3 5 3.3 8S14.2 17.7 12 20M12 4C9.8 6.3 8.7 9 8.7 12S9.8 17.7 12 20"></path></svg>
+          Website
+        </button>
+
+        <button class="filter-chip" id="phoneFilter" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 5 6c-1 1 0 5 4 9s8 5 9 4l2-2-4-3-2 2c-1-1-3-2-4-3s-2-3-3-4l2-2-2-3Z"></path></svg>
+          Phone
+        </button>
+
+        <button class="reset-filters" id="resetFilters" type="button">Reset</button>
+        <div class="filter-spacer"></div>
+
+        <div class="sort-wrap">
+          <span class="sort-label">Sort</span>
+          <select class="filter-select" id="sortFilter" aria-label="Sort results">
+            <option value="recommended">Recommended</option>
+            <option value="rating">Top rated</option>
+            <option value="reviews">Most reviewed</option>
+            <option value="distance">Nearest</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="results-grid" id="resultsGrid" data-view="list"></div>
+      <div class="no-results" id="noResults">No demo listings match these filters. Try resetting one or more filters.</div>
+
+      <div class="demo-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+        Demo listing data for UI prototyping. Replace with Google Places / your backend response later.
+      </div>
+    </section>
+
+    <section class="detail-page" id="detailPage" hidden aria-live="polite">
+      <div class="detail-topbar">
+        <button class="detail-back" id="backToResults" type="button" aria-label="Back to search results">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+          Back to results
+        </button>
+        <div class="detail-top-actions">
+          <button class="detail-top-action" id="detailShare" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2"></circle><circle cx="6" cy="12" r="2"></circle><circle cx="18" cy="19" r="2"></circle><path d="m8 11 8-5M8 13l8 5"></path></svg>Share</button>
+          <button class="detail-top-action" id="detailSave" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"></path></svg>Save</button>
+        </div>
+      </div>
+
+      <div class="detail-hero prism-panel" id="detailHero"></div>
+
+      <section class="similar-section prism-panel" aria-labelledby="similarHeading">
+        <div class="section-heading-row">
+          <div><div class="section-kicker">Discover nearby</div><h2 id="similarHeading">Similar places</h2></div>
+          <div class="section-note">Based on category, rating and distance</div>
+        </div>
+        <div class="similar-strip" id="similarStrip"></div>
+      </section>
+
+      <div class="detail-layout">
+        <div class="detail-main-column" id="detailMainColumn"></div>
+        <aside class="detail-sidebar" id="detailSidebar" aria-label="Tags and related places"></aside>
+      </div>
+    </section>
+
+  </main>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

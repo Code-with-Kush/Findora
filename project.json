@@ -1,0 +1,13 @@
+{
+  "name": "prism-directory",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Modern New Zealand directory/discovery prototype",
+  "entry": "index.html",
+  "stack": [
+    "HTML5",
+    "CSS3",
+    "Vanilla JavaScript"
+  ],
+  "buildRequired": false
+}
